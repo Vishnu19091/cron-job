@@ -1,0 +1,37 @@
+.background {
+  background-color: #4d4d4d2d;
+  width: 100%;
+}
+.navBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px 10px 10px 10px;
+}
+.navBar h3 {
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.navBar li {
+  font-size: large;
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.navLinks li {
+  cursor: pointer;
+}
+
+.navLinks a:hover {
+  text-decoration: underline;
+  text-underline-offset: 10px;
+}
