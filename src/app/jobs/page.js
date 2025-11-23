@@ -12,7 +12,7 @@ export default function Page() {
 
   async function loadJobs() {
     const res = await tablesDB.listRows({
-      databaseId: "691eef13000459991824",
+      databaseId: process.env.NEXT_PUBLIC_DATABASE_ID,
       tableId: "jobs-collections",
       queries: [Query.select(["*"])],
     });
