@@ -1,0 +1,141 @@
+/* ============================
+   Base Container
+============================ */
+.layer {
+  width: 90%;
+  margin: 1rem auto;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffb38a;
+  margin-bottom: 1rem;
+}
+
+/* ============================
+   Table Layout
+============================ */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--table-bg, #0f0f0f);
+  color: var(--table-text, #eaeaea);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+}
+
+.thead {
+  background: var(--table-head-bg, #1b1b1b);
+  color: var(--table-head-text, #f0f0f0);
+}
+
+.table th,
+.table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #2c2c2c;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.table tbody tr:nth-child(even) {
+  background: var(--row-alt, #151515);
+}
+
+.table tbody tr:hover {
+  background: var(--row-hover, #202020);
+  transition: background 0.2s ease;
+}
+
+/* ============================
+   Cell Styling
+============================ */
+.titleCell {
+  display: flex;
+  flex-direction: column;
+}
+
+.jobName {
+  font-weight: 600;
+  color: var(--job-name, #ffffff);
+}
+
+.jobUrl {
+  font-size: 0.8rem;
+  color: var(--job-url, #aaaaaa);
+}
+
+/* ============================
+   Status Tags
+============================ */
+.status {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.active {
+  background: rgba(0, 255, 100, 0.15);
+  color: #3afc7a;
+  border: 1px solid #2ed66c;
+}
+
+.paused {
+  background: rgba(255, 220, 0, 0.15);
+  color: #ffea65;
+  border: 1px solid #d3c64a;
+}
+
+.failed {
+  background: rgba(255, 60, 60, 0.15);
+  color: #ff7676;
+  border: 1px solid #c14c4c;
+}
+
+/* ============================
+   Method Tag
+============================ */
+.method {
+  background: rgba(120, 120, 120, 0.25);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+/* ============================
+   Action Buttons
+============================ */
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.editLink {
+  color: #6cb8ff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.editLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+.deleteBtn {
+  background: transparent;
+  color: #ff7a7a;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.deleteBtn:hover {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
