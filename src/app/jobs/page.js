@@ -1,13 +1,13 @@
 "use client";
 
-import { appwrite } from "@/app/_lib/appwrite";
+import { client } from "@/app/_lib/appwrite";
 import { TablesDB, Query } from "appwrite";
 import style from "./_styles/jobs.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Page() {
-  const tablesDB = new TablesDB(appwrite);
+  const tablesDB = new TablesDB(client);
   const [jobs, setJobs] = useState([]);
 
   async function loadJobs() {

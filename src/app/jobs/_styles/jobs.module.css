@@ -13,7 +13,19 @@
   margin-bottom: 1rem;
 }
 
-/* ============================
+/* -------------------------
+    Light Theme
+------------------------- 
+.light {
+  --table-bg: #ffffff;
+  --table-text: #222;
+  --table-head-bg: #f4f4f4;
+  --row-alt: #fafafa;
+  --row-hover: #eee;
+}
+*/
+
+/* -------------------------
    Table Layout
 ============================ */
 .table {
