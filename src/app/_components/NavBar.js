@@ -1,6 +1,13 @@
+"use client";
 import Link from "next/link";
 import style from "./NavBar.module.css";
 
+/**
+ * Must be in the left side of the viewport
+ * same applies to mobile devices
+ * and for mobile device modal window must be given
+ * @returns NavigationBar
+ */
 export default function NavBar() {
   return (
     <div className={style.background}>
@@ -11,13 +18,20 @@ export default function NavBar() {
 
         <nav>
           <ul className={style.navLinks}>
-            <Link href={"auth"}>SignUp</Link>
-            <Link href={"auth"}>SignIn</Link>
+            {/* {!user && (
+              <button onClick={LoginWithGoogle} className={style.googleBtn}>
+                Continue with Google
+              </button>
+            )} */}
 
             {/* Display the dashboard & Jobs link only if the User exist and logged in */}
-            <Link href={"dashboard"}>Dashboard</Link>
-            <Link href={"jobs"}>Jobs</Link>
-            <Link href={"settings"}>Settings</Link>
+            {/* {user && (
+              <>
+                <Link href={"/dashboard"}>Dashboard</Link>
+                <Link href={"/jobs"}>Jobs</Link>
+                <Link href={"/settings"}>Settings</Link>
+              </>
+            )} */}
           </ul>
         </nav>
       </div>
