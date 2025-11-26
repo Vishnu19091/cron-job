@@ -1,8 +1,7 @@
-"use client";
 import { Client } from "appwrite";
 
-export const appwrite = new Client();
+export const client = new Client();
 
-appwrite
+client
   .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
   .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
