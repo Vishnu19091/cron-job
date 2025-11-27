@@ -1,0 +1,42 @@
+.title {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -30%);
+  font-size: 3rem;
+}
+
+.auth_bg {
+  min-height: 100vh;
+  width: 100%;
+
+  background: #0a1116; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #000000,
+    #0a1116,
+    #000000
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #000000,
+    #0a1116,
+    #000000
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.layout_container {
+  width: 100%;
+  max-width: 500px;
+
+  min-height: auto;
+  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
