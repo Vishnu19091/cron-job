@@ -1,14 +1,53 @@
+"use client";
 import Link from "next/link";
 import styles from "./signin.module.css";
+import { Account } from "appwrite";
+import { client } from "@/app/_lib/appwrite";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const account = new Account(client);
+  const [email, setEmail] = useState(null | "");
+  const [passwd, setPasswd] = useState(null | "");
+  const router = useRouter();
+
+  async function onFormSubmit(e) {
+    e.preventDefault();
+
+    if (email && passwd && email.length > 5 && passwd.length > 8) {
+      try {
+        const result = await account.createEmailPasswordSession({
+          email: email,
+          password: passwd,
+        });
+        console.log(result);
+        if (result) {
+          router.push("/dashboard");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
   return (
     <div className={styles.card}>
       <div className={styles.title}>Sign In</div>
 
-      <form className={styles.form}>
-        <input placeholder="Enter Email" type="email" />
-        <input placeholder="Enter password" type="password" />
+      <form className={styles.form} onSubmit={onFormSubmit}>
+        <input
+          placeholder="Enter Email"
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          placeholder="Enter password"
+          type="password"
+          onChange={(e) => setPasswd(e.target.value)}
+        />
+
         <button type="submit" className={styles.primaryBtn}>
           Sign In
         </button>

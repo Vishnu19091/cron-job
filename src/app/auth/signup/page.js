@@ -4,7 +4,7 @@ import styles from "./signup.module.css";
 import { Account, ID } from "appwrite";
 import { client } from "@/app/_lib/appwrite";
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const account = new Account(client);
@@ -12,6 +12,7 @@ export default function Page() {
   const [userName, setUserName] = useState(null | "");
   const [email, setEmail] = useState(null | "");
   const [passwd, setPasswd] = useState(null | "");
+  const router = useRouter();
 
   async function onFormSubmit(e) {
     e.preventDefault();
@@ -31,10 +32,10 @@ export default function Page() {
           password: passwd,
           name: userName,
         });
+        router.push("/auth/signin");
       } catch (error) {
         console.error("Unable to register a new user!", error);
       }
-      redirect("/auth/signin");
     }
   }
 
