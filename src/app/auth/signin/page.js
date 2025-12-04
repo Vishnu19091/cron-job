@@ -5,6 +5,8 @@ import { Account } from "appwrite";
 import { client } from "@/app/_lib/appwrite";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PasswdIPField from "@/app/auth/_components/PasswdIPField";
+import EmailField from "../_components/EmailField";
 
 export default function Page() {
   const account = new Account(client);
@@ -28,6 +30,9 @@ export default function Page() {
       } catch (err) {
         console.error(err);
       }
+    } else {
+      // Later pop up a toast with missing input field
+      alert(`Complete * mentioned input fields`);
     }
   }
 
@@ -36,17 +41,9 @@ export default function Page() {
       <div className={styles.title}>Sign In</div>
 
       <form className={styles.form} onSubmit={onFormSubmit}>
-        <input
-          placeholder="Enter Email"
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <EmailField setEmail={setEmail} />
 
-        <input
-          placeholder="Enter password"
-          type="password"
-          onChange={(e) => setPasswd(e.target.value)}
-        />
+        <PasswdIPField setPasswd={setPasswd} />
 
         <button type="submit" className={styles.primaryBtn}>
           Sign In

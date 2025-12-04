@@ -1,0 +1,14 @@
+.email_comp {
+  height: fit-content;
+}
+
+.email_comp input {
+  border-radius: 0.6rem;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.email_comp input:focus {
+  outline: none;
+  border: 1px solid #99a1af;
+}

@@ -5,6 +5,8 @@ import { Account, ID } from "appwrite";
 import { client } from "@/app/_lib/appwrite";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PasswdIPField from "@/app/auth/_components/PasswdIPField";
+import EmailField from "@/app/auth/_components/EmailField";
 
 export default function Page() {
   const account = new Account(client);
@@ -52,17 +54,9 @@ export default function Page() {
           onChange={(e) => setUserName(e.target.value)}
         />
 
-        <input
-          placeholder="jon.doe@gmail.com *"
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <EmailField setEmail={setEmail} />
 
-        <input
-          placeholder="Enter a password *"
-          type="password"
-          onChange={(e) => setPasswd(e.target.value)}
-        />
+        <PasswdIPField setPasswd={setPasswd} />
 
         <button type="submit" className={styles.primaryBtn}>
           Sign up
