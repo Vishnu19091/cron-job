@@ -1,32 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { client } from "@/app/_lib/appwrite";
-import { Account } from "appwrite";
 import Logout from "./Logout";
-import { redirect } from "next/navigation";
+import { useGetUser } from "../auth/_hooks/useGetUser";
 
 export default function UserInfo() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const account = new Account(client);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const currentUser = await account.get();
-        setUser(currentUser);
-      } catch (error) {
-        setUser(null);
-        redirect("/auth/signin");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  const { user, loading } = useGetUser();
 
   if (loading) {
     return <p>Loading user data...</p>;
