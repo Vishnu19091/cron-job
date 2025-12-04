@@ -1,15 +1,18 @@
 "use client";
 import Link from "next/link";
 import styles from "./signup.module.css";
-import { Account, ID } from "appwrite";
-import { client } from "@/app/_lib/appwrite";
+import { ID } from "appwrite";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import PasswdIPField from "@/app/auth/_components/PasswdIPField";
 import EmailField from "@/app/auth/_components/EmailField";
+import { useGetUser } from "../_hooks/useGetUser";
 
 export default function Page() {
-  const account = new Account(client);
+  const { user } = useGetUser();
+  if (user) {
+    redirect("/dashboard");
+  }
 
   const [userName, setUserName] = useState(null | "");
   const [email, setEmail] = useState(null | "");
@@ -61,6 +64,11 @@ export default function Page() {
         <button type="submit" className={styles.primaryBtn}>
           Sign up
         </button>
+
+        {/* <button onClick={loginWithGoogle}>
+          <span>Google Icon</span>
+          Continue with Google
+        </button> */}
 
         <Link href={"/auth/signin"} className="w-fit cursor-default">
           Already a user? {""}

@@ -4,11 +4,17 @@ import styles from "./signin.module.css";
 import { Account } from "appwrite";
 import { client } from "@/app/_lib/appwrite";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import PasswdIPField from "@/app/auth/_components/PasswdIPField";
 import EmailField from "../_components/EmailField";
+import { useGetUser } from "../_hooks/useGetUser";
 
 export default function Page() {
+  const { user } = useGetUser();
+  if (user) {
+    redirect("/dashboard");
+  }
+
   const account = new Account(client);
   const [email, setEmail] = useState(null | "");
   const [passwd, setPasswd] = useState(null | "");
@@ -48,6 +54,11 @@ export default function Page() {
         <button type="submit" className={styles.primaryBtn}>
           Sign In
         </button>
+
+        {/* <button onClick={loginWithGoogle}>
+          <span>Google Icon</span>
+          Continue with Google
+        </button> */}
 
         <Link href={"/auth/signup"} className="w-fit cursor-default">
           New user? {""}
