@@ -1,0 +1,12 @@
+.side_bar_wrapper {
+  display: flex;
+  position: relative;
+}
+
+.side_bar {
+  height: 100vh;
+  background-color: #000;
+  border-right: 0.5px solid #271741;
+  color: #fff;
+  transition: all 300ms ease-in-out;
+}
