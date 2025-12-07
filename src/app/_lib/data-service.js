@@ -4,7 +4,7 @@ import { Query } from "appwrite";
 const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
 
 const jobsCollections = "jobs-collections";
-const logsCollection = "logs-collectoin";
+const logsCollection = "logs-collection";
 
 /**
  * Fetches a jobs logs of a user
@@ -18,9 +18,11 @@ export async function UserJobLogs(jobId) {
       tableId: logsCollection,
       queries: [Query.equal("jobId", jobId)],
     });
-    return res;
+
+    return res.rows; // return only rows
   } catch (error) {
-    return error;
+    console.error(error);
+    return []; // safe fallback
   }
 }
 
@@ -30,7 +32,7 @@ export async function UserJobLogs(jobId) {
  */
 export async function getUser() {
   try {
-    const user = account.get();
+    const user = await account.get();
     console.log(user);
     return user;
   } catch (error) {
