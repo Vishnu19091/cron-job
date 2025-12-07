@@ -1,7 +1,6 @@
 "use client";
 
-import Logout from "./Logout";
-import { useGetUser } from "../auth/_hooks/useGetUser";
+import { useGetUser } from "@/app/_hooks/useGetUser";
 
 export default function UserInfo() {
   const { user, loading } = useGetUser();
@@ -18,7 +17,6 @@ export default function UserInfo() {
     <div>
       <h1>Welcome, {user.name}!</h1>
       <p>Email: {user.email}</p>
-      <Logout />
     </div>
   );
 }

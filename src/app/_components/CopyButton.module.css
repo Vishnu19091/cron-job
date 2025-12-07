@@ -1,0 +1,14 @@
+/* Copy Button */
+.copyBtn {
+  background: #444;
+  color: #ddd;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.copyBtn:hover {
+  background: #555;
+}
