@@ -1,5 +1,5 @@
 import { account, tablesDB } from "./appwrite";
-import { Query } from "appwrite";
+import { ID, Query } from "appwrite";
 
 const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
 
@@ -55,6 +55,43 @@ export async function getUserJobs() {
 
     console.log("User jobs", res);
     return res;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function createCronJob(name, url, method, schedule) {
+  try {
+    const ownerId = (await account.get()).$id;
+    const result = await tablesDB.createRow({
+      databaseId: dbID,
+      tableId: jobsCollections,
+      rowId: ID.unique(),
+      data: {
+        name,
+        url,
+        method,
+        schedule,
+        ownerId,
+      },
+    });
+    console.log(result);
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteCronJob(rowid) {
+  try {
+    const result = await tablesDB.deleteRow({
+      databaseId: dbID,
+      tableId: jobsCollections,
+      rowId: rowid,
+    });
+
+    return result;
   } catch (error) {
     console.error(error);
   }
