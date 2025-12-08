@@ -18,6 +18,12 @@ export default function Page() {
     loadJobs();
   }, []);
 
+  async function onDelete(rowid) {
+    const res = await deleteCronJob(rowid);
+
+    if (res) setJobs((prev) => prev.filter((job) => job.$id !== rowid));
+  }
+
   return (
     <div className={style.layer}>
       <div className={style.header}>
@@ -69,12 +75,23 @@ export default function Page() {
               <td>
                 <div className={style.actions}>
                   <Link
+                    href={`/jobs/${rows.$id}/edit`}
+                    className={style.editLink}
+                  >
+                    Edit Job
+                  </Link>
+                  <Link
                     href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
                     className={style.editLink}
                   >
                     View Logs
                   </Link>
-                  <button className={style.deleteBtn}>Delete</button>
+                  <button
+                    onClick={() => onDelete(rows.$id)}
+                    className={style.deleteBtn}
+                  >
+                    Delete
+                  </button>
                 </div>
               </td>
             </tr>

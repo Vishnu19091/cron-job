@@ -20,7 +20,7 @@ export default function Page() {
       const id = res.$id;
       console.log(id);
 
-      if (res) router.push(`/jobs/${id}?name=${name}`);
+      if (res) router.push(`/jobs/${id}/logs?name=${name}`);
     }
   }
 
