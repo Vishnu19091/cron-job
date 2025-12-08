@@ -2,22 +2,25 @@
 import Link from "next/link";
 import styles from "./signup.module.css";
 import { ID } from "appwrite";
-import { useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import PasswdIPField from "@/app/(public)/auth/_components/PasswdIPField";
 import EmailField from "@/app/(public)/auth/_components/EmailField";
-import { useGetUser } from "@/app/_hooks/useGetUser";
+import { getUser } from "@/app/_lib/data-service";
 
 export default function Page() {
-  const { user } = useGetUser();
-  if (user) {
-    redirect("/dashboard");
-  }
-
-  const [userName, setUserName] = useState(null | "");
-  const [email, setEmail] = useState(null | "");
-  const [passwd, setPasswd] = useState(null | "");
+  const { user } = getUser();
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
+
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [passwd, setPasswd] = useState("");
 
   async function onFormSubmit(e) {
     e.preventDefault();
