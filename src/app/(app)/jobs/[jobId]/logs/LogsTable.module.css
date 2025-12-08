@@ -1,0 +1,119 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Controls above the table */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.select {
+  background: #111;
+  border: 1px solid #333;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  color: #ccc;
+}
+
+/* Table Wrapper */
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid #2c2c2c;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #0005;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Header */
+.thead {
+  background: #2c2c2c;
+  color: #ddd;
+}
+
+.th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Body */
+.tbody {
+  background: #111111;
+  color: #ccc;
+}
+
+.row {
+  border-top: 1px solid #444;
+  cursor: pointer;
+  transition: background 0.15s ease-in-out;
+}
+
+.row:hover {
+  background: #333;
+}
+
+.td {
+  padding: 12px;
+}
+
+/* Success / Failed colors */
+.success {
+  color: #4ade80; /* green */
+  font-weight: 600;
+}
+
+.failed {
+  color: #f87171; /* red */
+  font-weight: 600;
+}
+
+/* View / Hide Button */
+.viewBtn {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+/* Expandable Row */
+.expandedRow {
+  background: #2c2c2c;
+  border-bottom: 1px solid #444;
+}
+
+.expandedCol {
+  padding: 16px;
+}
+
+.responseBox {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.pre {
+  background: #111;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  color: #aaa;
+  overflow-x: auto;
+}
+
+/* No Logs */
+.noLogsBody {
+  background: #111;
+  color: #ccc;
+}
+
+.noLogsCell {
+  padding: 20px;
+  text-align: center;
+}

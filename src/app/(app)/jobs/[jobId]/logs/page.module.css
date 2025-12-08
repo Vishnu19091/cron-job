@@ -1,0 +1,11 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: calc(var(--spacing) * 10);
+}
+
+.container {
+  width: 90%;
+  max-width: 75rem;
+}
