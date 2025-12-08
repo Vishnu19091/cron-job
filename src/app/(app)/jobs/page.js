@@ -1,21 +1,15 @@
 "use client";
 
-import { client } from "@/app/_lib/appwrite";
-import { TablesDB, Query } from "appwrite";
 import style from "./_styles/jobs.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { deleteCronJob, getUserJobs } from "@/app/_lib/data-service";
 
 export default function Page() {
-  const tablesDB = new TablesDB(client);
   const [jobs, setJobs] = useState([]);
 
   async function loadJobs() {
-    const res = await tablesDB.listRows({
-      databaseId: process.env.NEXT_PUBLIC_DATABASE_ID,
-      tableId: "jobs-collections",
-      queries: [Query.select(["*"])],
-    });
+    const res = await getUserJobs();
 
     setJobs(res.rows);
   }
@@ -23,11 +17,13 @@ export default function Page() {
   useEffect(() => {
     loadJobs();
   }, []);
-  // console.log(jobs);
 
   return (
     <div className={style.layer}>
-      <h1 className={style.heading}>Cronjobs</h1>
+      <div className={style.header}>
+        <h1>Cronjobs</h1>
+        <Link href="/jobs/create">Create job</Link>
+      </div>
 
       <table className={style.table}>
         <thead className={style.thead}>
@@ -72,12 +68,13 @@ export default function Page() {
 
               <td>
                 <div className={style.actions}>
-                  <Link href={`/jobs/${rows.$id}`} className={style.editLink}>
-                    Edit Job
+                  <Link
+                    href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
+                    className={style.editLink}
+                  >
+                    View Logs
                   </Link>
-                  <Link href={`/jobs/${rows.$id}`} className={style.deleteBtn}>
-                    Delete
-                  </Link>
+                  <button className={style.deleteBtn}>Delete</button>
                 </div>
               </td>
             </tr>

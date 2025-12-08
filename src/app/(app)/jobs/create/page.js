@@ -1,11 +1,27 @@
 "use client";
+import { useState } from "react";
 import styles from "./page.module.css";
+import { createCronJob } from "@/app/_lib/data-service";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  function onCreateJob(e) {
+  const [name, setName] = useState("");
+  const [url, setURL] = useState("");
+  const [method, setMethod] = useState("GET");
+  const [schedule, setSchedule] = useState("1");
+
+  const router = useRouter();
+
+  async function onCreateJob(e) {
     e.preventDefault();
 
-    console.log("Create job function executed!");
+    if (name && url && method && schedule) {
+      const res = await createCronJob(name, url, method, schedule);
+      const id = res.$id;
+      console.log(id);
+
+      if (res) router.push(`/jobs/${id}?name=${name}`);
+    }
   }
 
   async function Testrun() {
@@ -19,25 +35,35 @@ export default function Page() {
           <form onSubmit={onCreateJob} className={styles.form}>
             <div className="flex flex-col gap-5">
               <label>Job name</label>
-              <input placeholder="Enter Job name" type="text" />
+              <input
+                placeholder="Enter Job name"
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+              />
 
               <label>URL</label>
-              <input placeholder="Target URL" />
+              <input
+                placeholder="Target URL"
+                onChange={(e) => setURL(e.target.value)}
+              />
             </div>
 
             <div className="flex flex-col gap-5">
               <label>Method</label>
-              <select name="method">
-                <option value="get">GET</option>
-                <option value="post">POST</option>
-                <option value="put">PUT</option>
-                <option value="delete">DELETE</option>
+              <select name="method" onChange={(e) => setMethod(e.target.value)}>
+                <option value="GET">GET</option>
+                <option value="PUT">PUT</option>
+                <option value="POST">POST</option>
+                <option value="DELETE">DELETE</option>
               </select>
 
               <label>Execution Schedule</label>
               <span>
                 Every{" "}
-                <select name="Job schedule">
+                <select
+                  name="Job schedule"
+                  onChange={(e) => setSchedule(e.target.value)}
+                >
                   <option value="1">1 minutes</option>
                   <option value="2">2 minutes</option>
                   <option value="5">5 minutes</option>
