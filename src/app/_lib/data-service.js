@@ -1,3 +1,5 @@
+// For Client-side use Appwrite Web SDK
+
 import { account, tablesDB } from "./appwrite";
 import { ID, Query } from "appwrite";
 
@@ -23,20 +25,6 @@ export async function UserJobLogs(jobId) {
   } catch (error) {
     console.error(error);
     return []; // safe fallback
-  }
-}
-
-/**
- * Fetches currently logged in user details
- * @returns user data
- */
-export async function getUser() {
-  try {
-    const user = await account.get();
-    console.log(user);
-    return user;
-  } catch (error) {
-    throw new Error(error);
   }
 }
 
