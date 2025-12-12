@@ -13,6 +13,7 @@
     "lucide-react": "^0.555.0",
     "next": "^15.5.7",
     "next-auth": "^5.0.0-beta.30",
+    "node-appwrite": "^21.0.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
