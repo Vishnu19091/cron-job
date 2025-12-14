@@ -1,6 +1,5 @@
-"use client";
 import SideBar from "@/app/_components/SideBar";
-import { useGetUser } from "@/app/_hooks/useGetUser";
+import { AuthProvider } from "../_contexts/AuthContext";
 
 /**
  * This Layout is only applied to (app) route group
@@ -10,15 +9,16 @@ import { useGetUser } from "@/app/_hooks/useGetUser";
  * **which means only registered user accounts can have access**
 
  * Renders the main application only to registered user accounts
+
+ * Refer middleware.js
  */
 export default function AppLayout({ children }) {
-  const { user } = useGetUser();
-
-  if (user)
-    return (
-      <main className="flex flex-row">
+  return (
+    <main className="flex flex-row">
+      <AuthProvider>
         <SideBar />
         {children}
-      </main>
-    );
+      </AuthProvider>
+    </main>
+  );
 }

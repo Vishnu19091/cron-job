@@ -4,17 +4,12 @@ import styles from "./signin.module.css";
 import { Account } from "appwrite";
 import { client } from "@/app/_lib/appwrite";
 import { useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import PasswdIPField from "@/app/(public)/auth/_components/PasswdIPField";
 import EmailField from "../_components/EmailField";
-import { useGetUser } from "@/app/_hooks/useGetUser";
+import GoogleSignInButton from "@/app/_components/GoogleSignInButton";
 
 export default function Page() {
-  const { user } = useGetUser();
-  if (user) {
-    redirect("/dashboard");
-  }
-
   const account = new Account(client);
   const [email, setEmail] = useState(null | "");
   const [passwd, setPasswd] = useState(null | "");
@@ -29,8 +24,13 @@ export default function Page() {
           email: email,
           password: passwd,
         });
-        console.log(result);
-        if (result) {
+        // Get cookie from the JWT created Server SDK
+        const jwt = await account.createJWT();
+
+        // store the cookie in the browser
+        document.cookie = `appwrite_jwt=${jwt.jwt}; path=/; secure;`;
+
+        if (result && jwt) {
           router.push("/dashboard");
         }
       } catch (err) {
@@ -55,11 +55,6 @@ export default function Page() {
           Sign In
         </button>
 
-        {/* <button onClick={loginWithGoogle}>
-          <span>Google Icon</span>
-          Continue with Google
-        </button> */}
-
         <Link href={"/auth/signup"} className="w-fit cursor-default">
           New user? {""}
           <span className="text-violet-300 hover:text-violet-500 w-fit cursor-pointer">
@@ -67,6 +62,10 @@ export default function Page() {
           </span>
         </Link>
       </form>
+
+      <p>or</p>
+
+      <GoogleSignInButton />
     </div>
   );
 }

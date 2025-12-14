@@ -2,22 +2,12 @@
 import Link from "next/link";
 import styles from "./signup.module.css";
 import { ID } from "appwrite";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import PasswdIPField from "@/app/(public)/auth/_components/PasswdIPField";
 import EmailField from "@/app/(public)/auth/_components/EmailField";
-import { getUser } from "@/app/_lib/data-service";
+import GoogleSignInButton from "@/app/_components/GoogleSignInButton";
 
 export default function Page() {
-  const { user } = getUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [user, router]);
-
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [passwd, setPasswd] = useState("");
@@ -68,11 +58,6 @@ export default function Page() {
           Sign up
         </button>
 
-        {/* <button onClick={loginWithGoogle}>
-          <span>Google Icon</span>
-          Continue with Google
-        </button> */}
-
         <Link href={"/auth/signin"} className="w-fit cursor-default">
           Already a user? {""}
           <span className="text-violet-300 hover:text-violet-500 w-fit cursor-pointer">
@@ -80,6 +65,8 @@ export default function Page() {
           </span>
         </Link>
       </form>
+      <p>or</p>
+      <GoogleSignInButton />
     </div>
   );
 }
