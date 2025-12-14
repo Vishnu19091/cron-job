@@ -75,6 +75,9 @@
 
 /* Footer section */
 .sidebar_footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   padding: 1rem;
   text-align: center;
 }

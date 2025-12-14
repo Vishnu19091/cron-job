@@ -31,7 +31,6 @@ export async function getUser() {
 
   // ------------- AppWrite Session -------------
   const jwt = await getJwtCookie();
-  console.log(jwt);
   if (jwt)
     try {
       const { accountSC } = getServerAppwriteClient(jwt);

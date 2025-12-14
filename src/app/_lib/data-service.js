@@ -2,6 +2,7 @@
 
 import { account, tablesDB } from "./appwrite";
 import { ID, Query } from "appwrite";
+import { redirect } from "next/navigation";
 
 const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
 
@@ -41,7 +42,6 @@ export async function getUserJobs() {
       queries: [Query.equal("ownerId", ownerId)],
     });
 
-    console.log("User jobs", res);
     return res;
   } catch (error) {
     console.error(error);
@@ -63,7 +63,6 @@ export async function createCronJob(name, url, method, schedule) {
         ownerId,
       },
     });
-    console.log(result);
 
     return result;
   } catch (error) {
@@ -83,4 +82,16 @@ export async function deleteCronJob(rowid) {
   } catch (error) {
     console.error(error);
   }
+}
+
+/**
+ * SignOut User
+ */
+export async function signOutUser() {
+  const result = await account.deleteSessions();
+
+  // delete cookie after signout
+  document.cookie = "appwrite_jwt=; Max-Age=0; path=/;";
+
+  redirect("/");
 }

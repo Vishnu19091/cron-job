@@ -1,10 +1,17 @@
 "use client";
 import Link from "next/link";
-import Logout from "./Logout";
-import { LayoutDashboard, Calendar, Settings, PanelRight } from "lucide-react";
+import {
+  LayoutDashboard,
+  Calendar,
+  Settings,
+  PanelRight,
+  CircleUserIcon,
+} from "lucide-react";
 import { useState } from "react";
 import style from "./SideBar.module.css";
 import { usePathname } from "next/navigation";
+import SignOutButton from "./SignOutButton";
+import { useAuth } from "@/app/_contexts/AuthContext";
 
 const Menu = [
   {
@@ -22,6 +29,7 @@ const Menu = [
 
 export default function SideBar() {
   const [open, setOpen] = useState(true);
+  const { userName, userAvatar } = useAuth();
 
   // For active tab Link bg highlighting
   const pathName = usePathname();
@@ -37,8 +45,6 @@ export default function SideBar() {
         <div className="flex items-center gap-3 px-4 py-6">
           {open && <h1 className="text-xl font-semibold">Cron-Job</h1>}
         </div>
-
-        {/* <p>UserName</p> */}
 
         {/* MENU */}
         <nav className={style.menu}>
@@ -62,7 +68,21 @@ export default function SideBar() {
         {open && (
           <div className={style.sidebar_footer}>
             <hr className={style.divider} />
-            <Logout />
+            <div className="flex flex-row gap-3 justify-center items-center mb-2">
+              {userAvatar ? (
+                <img
+                  src={userAvatar}
+                  alt="User Avatar"
+                  width={35}
+                  height={35}
+                />
+              ) : (
+                <CircleUserIcon height={35} width={35} />
+              )}
+              <span>{userName}</span>
+            </div>
+            <SignOutButton />
+
             <a
               className="flex gap-2 justify-center hover:text-blue-500 mt-4"
               href="https://github.com/Vishnu19091/cron-job"
@@ -83,7 +103,7 @@ export default function SideBar() {
           </div>
         )}
       </div>
-      {/* TOGGLE BUTTON */}
+      {/* SIDEBAR TOGGLE BUTTON */}
       <PanelRight
         className={`${style.toggle_button} ${
           !open ? style.toggle_button_collapsed : ""
