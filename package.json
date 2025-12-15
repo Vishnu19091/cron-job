@@ -8,7 +8,7 @@
     "start": "next start",
     "prod": "next build && next start",
     "lint": "eslint",
-    "cypress:open": "cypress open && next dev",
+    "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
   "dependencies": {
