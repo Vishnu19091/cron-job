@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "prod": "next build && next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cypress:open": "cypress open && next dev",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "appwrite": "^21.4.0",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "cypress": "^15.7.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "tailwindcss": "^4"
