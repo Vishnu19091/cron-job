@@ -5,7 +5,6 @@ Context Provider for User Session
 provides
 User name
 User email
-User provider (Session)
 User Avatar
 
 and also global theme state (Dark/White mode)
@@ -20,7 +19,6 @@ const initialState = {
   error: "",
   userName: null,
   userEmail: null,
-  userProvider: null,
   userAvatar: null,
   mode: "dark",
 };
@@ -37,7 +35,6 @@ function reducer(state, action) {
         userName: action.payload.name,
         userEmail: action.payload.email,
         userAvatar: action.payload.avatar,
-        userProvider: action.payload.provider,
       };
 
     case "session/rejected":
@@ -46,7 +43,6 @@ function reducer(state, action) {
         isLoading: false,
         userName: null,
         userEmail: null,
-        userProvider: null,
         userAvatar: null,
         error: action.payload,
       };
@@ -57,18 +53,17 @@ function reducer(state, action) {
 }
 
 function AuthProvider({ children }) {
-  const [
-    { userName, userEmail, userAvatar, userProvider, isLoading, dark },
-    dispatch,
-  ] = useReducer(reducer, initialState);
+  const [{ userName, userEmail, userAvatar, isLoading, dark }, dispatch] =
+    useReducer(reducer, initialState);
 
   useEffect(() => {
     const loadSession = async () => {
       dispatch({ type: "loading" });
 
       try {
-        const res = await fetch("/api/user");
-        const data = await res.json().then((data) => data.user);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user`);
+        const data = await res.json();
+        // console.log(data);
 
         dispatch({ type: "session/loaded", payload: data });
       } catch (error) {
@@ -87,7 +82,6 @@ function AuthProvider({ children }) {
       value={{
         userName,
         userEmail,
-        userProvider,
         userAvatar,
         isLoading,
         dark,

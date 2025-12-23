@@ -75,6 +75,7 @@ export default function SideBar() {
                   alt="User Avatar"
                   width={35}
                   height={35}
+                  className="rounded-full"
                 />
               ) : (
                 <CircleUserIcon height={35} width={35} />

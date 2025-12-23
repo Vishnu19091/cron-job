@@ -83,15 +83,3 @@ export async function deleteCronJob(rowid) {
     console.error(error);
   }
 }
-
-/**
- * SignOut User
- */
-export async function signOutUser() {
-  const result = await account.deleteSessions();
-
-  // delete cookie after signout
-  document.cookie = "appwrite_jwt=; Max-Age=0; path=/;";
-
-  redirect("/");
-}

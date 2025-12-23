@@ -1,8 +1,6 @@
 "use client";
 import Link from "next/link";
 import styles from "./signin.module.css";
-import { Account } from "appwrite";
-import { client } from "@/app/_lib/appwrite";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PasswdIPField from "@/app/(public)/auth/_components/PasswdIPField";
@@ -10,7 +8,6 @@ import EmailField from "../_components/EmailField";
 import GoogleSignInButton from "@/app/_components/GoogleSignInButton";
 
 export default function Page() {
-  const account = new Account(client);
   const [email, setEmail] = useState(null | "");
   const [passwd, setPasswd] = useState(null | "");
   const router = useRouter();
@@ -18,19 +15,23 @@ export default function Page() {
   async function onFormSubmit(e) {
     e.preventDefault();
 
-    if (email && passwd && email.length > 5 && passwd.length > 8) {
+    if (email && passwd) {
       try {
-        const result = await account.createEmailPasswordSession({
-          email: email,
-          password: passwd,
-        });
-        // Get cookie from the JWT created Server SDK
-        const jwt = await account.createJWT();
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/signin`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ email: email, password: passwd }),
+          }
+        );
 
-        // store the cookie in the browser
-        document.cookie = `appwrite_jwt=${jwt.jwt}; path=/; secure;`;
+        const data = await response.json();
 
-        if (result && jwt) {
+        if (response.status == 201 && data.message) {
           router.push("/dashboard");
         }
       } catch (err) {

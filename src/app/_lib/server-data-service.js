@@ -1,50 +1,16 @@
 // For Server-side use
+"use server";
 import { cookies } from "next/headers";
-import { getServerAppwriteClient } from "./appwrite.server";
-import { auth } from "@/auth";
+import { createSessionClient } from "./server/appwrite.server";
+import { redirect } from "next/navigation";
 
-// Helper to read cookies in a server function
-async function getJwtCookie() {
+export async function signOut() {
+  const { account } = await createSessionClient();
+
   const cookieStore = await cookies();
-  return cookieStore.get("appwrite_jwt")?.value ?? null;
-}
+  cookieStore.delete("appwrite_session");
 
-/**
- * Fetches currently logged in user details
- 
- *  Unified user fetch Google OAuth and Appwrite
- 
- * @returns user data
- */
-export async function getUser() {
-  // ------------- Google OAuth Session -------------
-  const nextAuthSession = await auth();
+  await account.deleteSession("current");
 
-  if (nextAuthSession?.user) {
-    return {
-      name: nextAuthSession.user.name,
-      email: nextAuthSession.user.email,
-      avatar: nextAuthSession.user.image,
-      provider: "Google",
-    };
-  }
-
-  // ------------- AppWrite Session -------------
-  const jwt = await getJwtCookie();
-  if (jwt)
-    try {
-      const { accountSC } = getServerAppwriteClient(jwt);
-      const user = await accountSC.get();
-      return {
-        name: user.name,
-        email: user.email,
-        avatar: null,
-        provider: "AppWrite",
-      };
-    } catch (error) {
-      throw new Error("From AppWrite", error);
-    }
-
-  // for no user
-  return null;
+  redirect("/auth/signin");
 }
