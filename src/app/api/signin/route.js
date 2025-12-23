@@ -14,7 +14,7 @@ export async function POST(req) {
     });
 
     // console.log(session);
-    (await cookies()).set("appwrite_session", session?.secret, {
+    (await cookies()).set("appwrite_session", session.secret, {
       httpOnly: true,
       sameSite: "strict",
       secure: true,
