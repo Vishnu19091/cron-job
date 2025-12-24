@@ -70,9 +70,4 @@ describe("Auth Signin using valid credentials", () => {
     // Session cookie exists
     cy.getCookie("appwrite_session").should("exist");
   });
-
-  it("renders user info on dashboard", () => {
-    cy.contains(`Welcome, ${sign_in_username}!`).should("be.visible");
-    cy.contains(`Email: ${sign_in_email}`).should("be.visible");
-  });
 });

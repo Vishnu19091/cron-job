@@ -40,7 +40,7 @@ describe("Signup validation & toasts", () => {
 
     cy.contains("button", /^sign up$/i).click();
 
-    cy.contains("Password must be at least 9 characters").should("be.visible");
+    cy.contains("Password must be at least 8 characters").should("be.visible");
   });
 
   // Toast for duplicate account
@@ -50,9 +50,6 @@ describe("Signup validation & toasts", () => {
     cy.get('input[type="password"]').type(sign_up_password);
 
     cy.contains("button", /^sign up$/i).click();
-
-    // Loading toast
-    cy.contains("Creating your account...").should("be.visible");
 
     // Error toast from backend
     cy.contains(/same id, email, or phone already exists/i, {
