@@ -9,6 +9,7 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    environment: production
 
     env:
       # APPWRITE ENVIRONMENTS
