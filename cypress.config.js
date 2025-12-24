@@ -4,7 +4,8 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "http://localhost:3000",
     supportFile: false,
-    downloadsFolder: "False",
+    downloadsFolder: false,
+    screenshotsFolder: false,
     setupNodeEvents(on, config) {},
   },
 });
