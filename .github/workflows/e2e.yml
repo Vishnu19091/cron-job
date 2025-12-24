@@ -25,6 +25,15 @@ jobs:
       # APP URL
       NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
 
+      # CYPRESS ENVIRONMENTS
+      CYPRESS_TEST_SIGN_IN_EMAIL: ${{ secrets.TEST_SIGN_IN_EMAIL }}
+      CYPRESS_TEST_SIGN_IN_PASSWORD: ${{ secrets.TEST_SIGN_IN_PASSWORD }}
+      CYPRESS_TEST_SIGN_IN_USERNAME: ${{ secrets.TEST_SIGN_IN_USERNAME }}
+
+      CYPRESS_TEST_SIGN_UP_EMAIL: ${{ secrets.TEST_SIGN_UP_EMAIL }}
+      CYPRESS_TEST_SIGN_UP_PASSWORD: ${{ secrets.TEST_SIGN_UP_PASSWORD }}
+      CYPRESS_TEST_SIGN_UP_USERNAME: ${{ secrets.TEST_SIGN_UP_USERNAME }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
