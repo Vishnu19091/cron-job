@@ -1,0 +1,50 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    env:
+      # APPWRITE ENVIRONMENTS
+      NEXT_PUBLIC_APPWRITE_PROJECT_NAME: ${{secrets.NEXT_PUBLIC_APPWRITE_PROJECT_NAME}}
+      NEXT_PUBLIC_APPWRITE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_APPWRITE_PROJECT_ID }}
+      NEXT_PUBLIC_APPWRITE_ENDPOINT: ${{ secrets.NEXT_PUBLIC_APPWRITE_ENDPOINT }}
+      NEXT_PUBLIC_DATABASE_ID: ${{ secrets.NEXT_PUBLIC_DATABASE_ID }}
+
+      # GOOGLE ENVIRONMENTS
+      AUTH_GOOGLE_SECRET: ${{secrets.AUTH_GOOGLE_SECRET}}
+      AUTH_GOOGLE_ID: ${{secrets.AUTH_GOOGLE_ID}}
+
+      # APP URL
+      NEXT_PUBLIC_BASE_URL: ${{secrets.NEXT_PUBLIC_BASE_URL}}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+
+      - name: Start app
+        run: npm run start &
+
+      - name: Wait for app
+        run: npx wait-on http://localhost:3000
+
+      - name: Run Cypress E2E tests
+        run: npm run cypress:run
