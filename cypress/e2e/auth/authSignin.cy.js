@@ -38,7 +38,7 @@ describe("Auth Signin using valid credentials", () => {
     cy.contains("button", /^sign in$/i).click();
   });
 
-  it("redirects to dashboard", () => {
-    cy.url().should("include", "/dashboard");
+  it("redirects to dashboard after signin", () => {
+    cy.url({ timeout: 4000 }).should("include", "/dashboard");
   });
 });
