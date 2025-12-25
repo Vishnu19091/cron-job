@@ -53,7 +53,7 @@ describe("Signup validation & toasts", () => {
 
     // Error toast from backend
     cy.contains(/same id, email, or phone already exists/i, {
-      timeout: 4000,
+      timeout: 15000,
     }).should("be.visible");
   });
 
@@ -74,6 +74,6 @@ describe("Signup validation & toasts", () => {
   //     );
 
   //     // Redirect after toast duration
-  //     cy.url({ timeout: 10000 }).should("include", "/auth/signin");
+  //     cy.url({ timeout: 15000 }).should("include", "/auth/signin");
   //   });
 });

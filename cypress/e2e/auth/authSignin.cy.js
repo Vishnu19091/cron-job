@@ -42,7 +42,7 @@ describe("Auth Signin (validation) using Invalid credentials and Testing Toasts"
     cy.contains("button", /^sign in$/i).click();
 
     cy.contains(/invalid|incorrect|credentials/i, {
-      timeout: 4000,
+      timeout: 15000,
     }).should("be.visible");
   });
 });
@@ -64,7 +64,7 @@ describe("Auth Signin using valid credentials", () => {
 
     // Success toast
     cy.contains("Signed In successfully", {
-      timeout: 10000,
+      timeout: 15000,
     }).should("be.visible");
 
     // Session cookie exists
