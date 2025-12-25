@@ -48,10 +48,13 @@ jobs:
         run: npm ci
 
       - name: Build app
-        run: npm run prod
+        run: npm run build
+
+      - name: Start app
+        run: npm run start &
 
       - name: Wait for app
-        run: npx wait-on ${{secrets.NEXT_PUBLIC_BASE_URL}}
+        run: npx wait-on http://localhost:3000
 
       - name: Run Cypress E2E tests
         run: npm run cypress:run
