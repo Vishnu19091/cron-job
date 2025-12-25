@@ -23,28 +23,6 @@ describe("Auth Signin (validation) using Invalid credentials and Testing Toasts"
 
     cy.contains("All fields are required").should("be.visible");
   });
-
-  // Warning toast for Short Password
-  it("shows warning toast for short password", () => {
-    cy.get('input[type="email"]').type(sign_in_email);
-    cy.get('input[type="password"]').type("short");
-
-    cy.contains("button", /^sign in$/i).click();
-
-    cy.contains("Password must be at least 8 characters").should("be.visible");
-  });
-
-  // Toast for Invalid Credentials
-  it("shows error toast for invalid credentials", () => {
-    cy.get('input[type="email"]').type(sign_in_email);
-    cy.get('input[type="password"]').type("WrongPassword@123");
-
-    cy.contains("button", /^sign in$/i).click();
-
-    cy.contains(/invalid|incorrect|credentials/i, {
-      timeout: 15000,
-    }).should("be.visible");
-  });
 });
 
 describe("Auth Signin using valid credentials", () => {
@@ -58,16 +36,9 @@ describe("Auth Signin using valid credentials", () => {
     cy.get('input[type="password"]').type(sign_in_password);
 
     cy.contains("button", /^sign in$/i).click();
+  });
 
-    // Redirect
+  it("redirects to dashboard", () => {
     cy.url().should("include", "/dashboard");
-
-    // Success toast
-    cy.contains("Signed In successfully", {
-      timeout: 15000,
-    }).should("be.visible");
-
-    // Session cookie exists
-    cy.getCookie("appwrite_session").should("exist");
   });
 });

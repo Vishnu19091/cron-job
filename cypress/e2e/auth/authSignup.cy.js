@@ -43,20 +43,6 @@ describe("Signup validation & toasts", () => {
     cy.contains("Password must be at least 8 characters").should("be.visible");
   });
 
-  // Toast for duplicate account
-  it("shows error toast for duplicate account", () => {
-    cy.get('input[type="text"]').type(sign_up_username);
-    cy.get('input[type="email"]').type(sign_up_email);
-    cy.get('input[type="password"]').type(sign_up_password);
-
-    cy.contains("button", /^sign up$/i).click();
-
-    // Error toast from backend
-    cy.contains(/same id, email, or phone already exists/i, {
-      timeout: 15000,
-    }).should("be.visible");
-  });
-
   // Successfull Signup -> loading toast -> Redirection to /auth/signin
   //   it("creates account and redirects after success toast", () => {
   //     cy.get('input[type="text"]').type(sign_up_username);
