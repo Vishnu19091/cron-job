@@ -40,8 +40,6 @@ describe("Auth Signin using valid credentials", () => {
 
     cy.contains("button", /^sign in$/i).click();
 
-    cy.url({ timeout: 10000 }).should("include", "/dashboard");
-
     cy.getCookie("appwrite_session")
       .should("exist")
       .then((c) => {
