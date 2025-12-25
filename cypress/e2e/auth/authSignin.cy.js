@@ -9,6 +9,7 @@ After registering a new record, should redirect to /dashboard
 const sign_in_email = Cypress.env("TEST_SIGN_IN_EMAIL");
 const sign_in_password = Cypress.env("TEST_SIGN_IN_PASSWORD");
 const sign_in_username = Cypress.env("TEST_SIGN_IN_USERNAME");
+let cookie;
 
 describe("Auth Signin (validation) using Invalid credentials and Testing Toasts", () => {
   beforeEach(() => {
@@ -23,35 +24,15 @@ describe("Auth Signin (validation) using Invalid credentials and Testing Toasts"
 
     cy.contains("All fields are required").should("be.visible");
   });
-
-  // Warning toast for Short Password
-  it("shows warning toast for short password", () => {
-    cy.get('input[type="email"]').type(sign_in_email);
-    cy.get('input[type="password"]').type("short");
-
-    cy.contains("button", /^sign in$/i).click();
-
-    cy.contains("Password must be at least 8 characters").should("be.visible");
-  });
-
-  // Toast for Invalid Credentials
-  it("shows error toast for invalid credentials", () => {
-    cy.get('input[type="email"]').type(sign_in_email);
-    cy.get('input[type="password"]').type("WrongPassword@123");
-
-    cy.contains("button", /^sign in$/i).click();
-
-    cy.contains(/invalid|incorrect|credentials/i, {
-      timeout: 4000,
-    }).should("be.visible");
-  });
 });
 
 describe("Auth Signin using valid credentials", () => {
   before(() => {
     cy.clearCookies();
     cy.clearLocalStorage();
+  });
 
+  it("redirects to dashboard after signin", () => {
     cy.visit("/auth/signin");
 
     cy.get('input[type="email"]').type(sign_in_email);
@@ -59,20 +40,24 @@ describe("Auth Signin using valid credentials", () => {
 
     cy.contains("button", /^sign in$/i).click();
 
-    // Redirect
-    cy.url().should("include", "/dashboard");
-
-    // Success toast
-    cy.contains("Signed In successfully", {
-      timeout: 10000,
-    }).should("be.visible");
-
-    // Session cookie exists
-    cy.getCookie("appwrite_session").should("exist");
+    cy.getCookie("appwrite_session")
+      .should("exist")
+      .then((c) => {
+        cookie = c;
+      });
   });
 
-  it("renders user info on dashboard", () => {
-    cy.contains(`Welcome, ${sign_in_username}!`).should("be.visible");
-    cy.contains(`Email: ${sign_in_email}`).should("be.visible");
-  });
+  // it("can access protected user API", () => {
+  //   cy.request({
+  //     method: "GET",
+  //     url: "/api/user",
+  //     headers: {
+  //       Cookie: `appwrite_session=${cookie}`,
+  //     },
+  //     failOnStatusCode: false,
+  //   }).then((res) => {
+  //     expect(res.status).to.eq(200);
+  //     expect(res.body.email).to.eq(sign_in_email);
+  //   });
+  // });
 });

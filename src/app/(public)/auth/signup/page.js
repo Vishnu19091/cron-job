@@ -29,8 +29,8 @@ export default function Page() {
       return;
     }
 
-    if (passwd.length <= 8) {
-      toast.warning("Password must be at least 9 characters");
+    if (passwd.length <= 7) {
+      toast.warning("Password must be at least 8 characters");
       return;
     }
 
@@ -58,6 +58,7 @@ export default function Page() {
       if (!response.ok) {
         console.log(data);
 
+        setLoading(false);
         throw new Error(data.error);
       }
 
@@ -67,8 +68,6 @@ export default function Page() {
         isLoading: false,
         autoClose: 4000,
       });
-
-      setLoading(false);
 
       if (response.status == 201) {
         setTimeout(() => {
@@ -84,6 +83,8 @@ export default function Page() {
       });
 
       console.error("Unable to register a new user!", error);
+    } finally {
+      setLoading(false);
     }
   }
 
