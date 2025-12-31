@@ -1,5 +1,5 @@
 import { LogOut } from "lucide-react";
-import { signOut } from "../_lib/server-data-service";
+import { signOut } from "../_lib/server/server-data-service";
 
 function SignOutButton() {
   return (

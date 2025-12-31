@@ -1,13 +1,25 @@
-// For Client-side use Appwrite Web SDK
-
-import { account, tablesDB } from "./appwrite";
-import { ID, Query } from "appwrite";
+// For Server-side use
+"use server";
+import { cookies } from "next/headers";
+import { createSessionClient } from "./appwrite.server";
 import { redirect } from "next/navigation";
+import { ID, Query } from "node-appwrite";
 
 const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
 
 const jobsCollections = "jobs-collections";
 const logsCollection = "logs-collection";
+
+export async function signOut() {
+  const { account } = await createSessionClient();
+
+  const cookieStore = await cookies();
+  cookieStore.delete("appwrite_session");
+
+  await account.deleteSession("current");
+
+  redirect("/auth/signin");
+}
 
 /**
  * Fetches a jobs logs of a user
@@ -15,12 +27,16 @@ const logsCollection = "logs-collection";
  * @returns Job logs
  */
 export async function UserJobLogs(jobId) {
+  const { tablesDB } = await createSessionClient();
+
   try {
     const res = await tablesDB.listRows({
       databaseId: dbID,
       tableId: logsCollection,
       queries: [Query.equal("jobId", jobId)],
     });
+
+    // console.log(res);
 
     return res.rows; // return only rows
   } catch (error) {
@@ -34,6 +50,7 @@ export async function UserJobLogs(jobId) {
  * @returns Jobs
  */
 export async function getUserJobs() {
+  const { account, tablesDB } = await createSessionClient();
   try {
     const ownerId = (await account.get()).$id;
     const res = await tablesDB.listRows({
@@ -42,15 +59,21 @@ export async function getUserJobs() {
       queries: [Query.equal("ownerId", ownerId)],
     });
 
+    // console.log(res);
     return res;
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function createCronJob(name, url, method, schedule) {
+export async function createCronJob(name, url, method, cronExp) {
+  const { account, tablesDB } = await createSessionClient();
+
   try {
     const ownerId = (await account.get()).$id;
+
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const result = await tablesDB.createRow({
       databaseId: dbID,
       tableId: jobsCollections,
@@ -59,8 +82,9 @@ export async function createCronJob(name, url, method, schedule) {
         name,
         url,
         method,
-        schedule,
+        cronExp,
         ownerId,
+        timeZone: userTimeZone,
       },
     });
 
@@ -71,6 +95,8 @@ export async function createCronJob(name, url, method, schedule) {
 }
 
 export async function deleteCronJob(rowid) {
+  const { tablesDB } = await createSessionClient();
+
   try {
     const result = await tablesDB.deleteRow({
       databaseId: dbID,
