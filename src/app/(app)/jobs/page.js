@@ -1,15 +1,20 @@
 "use client";
 
-import style from "./_styles/jobs.module.css";
+import {
+  getUserJobs,
+  deleteCronJob,
+} from "@/app/_lib/server/server-data-service";
+import styles from "./_styles/jobs.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { deleteCronJob, getUserJobs } from "@/app/_lib/data-service";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [jobs, setJobs] = useState([]);
 
   async function loadJobs() {
     const res = await getUserJobs();
+    // console.log(res);
 
     setJobs(res.rows);
   }
@@ -18,21 +23,26 @@ export default function Page() {
     loadJobs();
   }, []);
 
-  async function onDelete(rowid) {
-    const res = await deleteCronJob(rowid);
+  async function onDelete(rowid, name) {
+    try {
+      const res = await deleteCronJob(rowid);
 
-    if (res) setJobs((prev) => prev.filter((job) => job.$id !== rowid));
+      if (res) setJobs((prev) => prev.filter((job) => job.$id !== rowid));
+      toast.success(`Job "${name}" deleted successfully!`);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
-    <div className={style.layer}>
-      <div className={style.header}>
+    <div className={styles.layer}>
+      <div className={styles.header}>
         <h1>Cronjobs</h1>
         <Link href="/jobs/create">Create job</Link>
       </div>
 
-      <table className={style.table}>
-        <thead className={style.thead}>
+      <table className={styles.table}>
+        <thead className={styles.thead}>
           <tr>
             <th>Job Title, URL</th>
             <th>Last Run</th>
@@ -43,60 +53,70 @@ export default function Page() {
           </tr>
         </thead>
 
-        <tbody>
-          {jobs.map((rows) => (
-            <tr key={rows.$id}>
-              <td className={style.titleCell}>
-                <span className={style.jobName}>{rows.name}</span>
-                <span className={style.jobUrl}>{rows.url}</span>
-              </td>
+        {jobs.length > 0 ? (
+          <tbody>
+            {jobs.map((rows) => (
+              <tr key={rows.$id}>
+                <td className={styles.titleCell}>
+                  <span className={styles.jobName}>{rows.name}</span>
+                  <span className={styles.jobUrl}>{rows.url}</span>
+                </td>
 
-              <td>{rows.lastRun}</td>
-              <td>{rows.schedule}</td>
+                <td>{rows.lastRun}</td>
+                <td>{rows.schedule}</td>
 
-              <td>
-                <span
-                  className={`${style.status} ${
-                    rows.status === "active"
-                      ? style.active
-                      : rows.status === "paused"
-                      ? style.paused
-                      : style.failed
-                  }`}
-                >
-                  {rows.status}
-                </span>
-              </td>
-
-              <td>
-                <span className={style.method}>{rows.method}</span>
-              </td>
-
-              <td>
-                <div className={style.actions}>
-                  <Link
-                    href={`/jobs/${rows.$id}/edit`}
-                    className={style.editLink}
+                <td>
+                  <span
+                    className={`${styles.status} ${
+                      rows.status === "active"
+                        ? styles.active
+                        : rows.status === "paused"
+                        ? styles.paused
+                        : styles.failed
+                    }`}
                   >
-                    Edit Job
-                  </Link>
-                  <Link
-                    href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
-                    className={style.editLink}
-                  >
-                    View Logs
-                  </Link>
-                  <button
-                    onClick={() => onDelete(rows.$id)}
-                    className={style.deleteBtn}
-                  >
-                    Delete
-                  </button>
-                </div>
+                    {rows.status}
+                  </span>
+                </td>
+
+                <td>
+                  <span className={styles.method}>{rows.method}</span>
+                </td>
+
+                <td>
+                  <div className={styles.actions}>
+                    <Link
+                      href={`/jobs/${rows.$id}/edit`}
+                      className={styles.editLink}
+                    >
+                      Edit Job
+                    </Link>
+                    <Link
+                      href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
+                      className={styles.editLink}
+                    >
+                      View Logs
+                    </Link>
+                    <button
+                      onClick={() => onDelete(rows.$id, rows.name)}
+                      className={styles.deleteBtn}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <tr>
+              <td colSpan={6} className={styles.not_found}>
+                No Jobs Found
               </td>
             </tr>
-          ))}
-        </tbody>
+          </tbody>
+        )}
       </table>
     </div>
   );

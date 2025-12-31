@@ -171,3 +171,7 @@
   text-decoration: underline;
   text-underline-offset: 8px;
 }
+
+.table .not_found {
+  text-align: center;
+}

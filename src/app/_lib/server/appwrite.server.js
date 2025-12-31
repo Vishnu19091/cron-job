@@ -1,6 +1,6 @@
 // Server-side use
 "use server";
-import { Client, Account } from "node-appwrite";
+import { Client, Account, TablesDB } from "node-appwrite";
 import { cookies } from "next/headers";
 
 export async function createSessionClient() {
@@ -21,6 +21,9 @@ export async function createSessionClient() {
     get account() {
       return new Account(client);
     },
+    get tablesDB() {
+      return new TablesDB(client);
+    },
   };
 }
 
@@ -33,6 +36,9 @@ export async function createAdminClient() {
   return {
     get account() {
       return new Account(client);
+    },
+    get tablesDB() {
+      return new TablesDB(client);
     },
   };
 }

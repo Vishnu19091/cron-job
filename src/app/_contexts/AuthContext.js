@@ -20,6 +20,7 @@ const initialState = {
   userName: null,
   userEmail: null,
   userAvatar: null,
+  userVerified: null,
   mode: "dark",
 };
 
@@ -35,6 +36,7 @@ function reducer(state, action) {
         userName: action.payload.name,
         userEmail: action.payload.email,
         userAvatar: action.payload.avatar,
+        userVerified: action.payload.emailVerification,
       };
 
     case "session/rejected":
@@ -44,6 +46,7 @@ function reducer(state, action) {
         userName: null,
         userEmail: null,
         userAvatar: null,
+        userVerified: null,
         error: action.payload,
       };
 
@@ -53,8 +56,10 @@ function reducer(state, action) {
 }
 
 function AuthProvider({ children }) {
-  const [{ userName, userEmail, userAvatar, isLoading, dark }, dispatch] =
-    useReducer(reducer, initialState);
+  const [
+    { userName, userEmail, userAvatar, userVerified, isLoading, dark },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   useEffect(() => {
     const loadSession = async () => {
@@ -83,6 +88,7 @@ function AuthProvider({ children }) {
         userName,
         userEmail,
         userAvatar,
+        userVerified,
         isLoading,
         dark,
       }}
@@ -95,7 +101,7 @@ function AuthProvider({ children }) {
 function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined)
-    throw new Error("Context User outside the provider");
+    throw new Error("Context Used outside the provider");
   return context;
 }
 
