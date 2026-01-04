@@ -1,5 +1,5 @@
 import { useCreateJob } from "@/app/_contexts/JobCreateContext";
-import { SCHEDULE_TYPES } from "../schedule-type";
+import { SCHEDULE_TYPES } from "./schedule-type";
 
 function CronScheduleType() {
   const {

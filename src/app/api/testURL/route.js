@@ -6,7 +6,19 @@ export async function POST(request) {
   try {
     const response = await fetch(url, { method });
     const end = performance.now();
-    const data = await response.json();
+    const contentType = response.headers.get("Content-Type");
+
+    let data;
+
+    if (contentType?.includes("application/json")) {
+      data = await response.json();
+    } else if (contentType?.includes("text/")) {
+      data = await response.text();
+    } else {
+      // Unknown or binary → return base64 string
+      const buffer = await response.arrayBuffer();
+      data = Buffer.from(buffer).toString("base64");
+    }
 
     return Response.json({
       ok: response.ok,

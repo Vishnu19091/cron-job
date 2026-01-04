@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import JobName from "./jobname";
 
 export default async function Logs({ params }) {
-  const jobId = await params.jobId;
+  const jobId = (await params).jobId;
   const logs = await UserJobLogs(jobId);
 
   return (

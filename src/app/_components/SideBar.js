@@ -29,7 +29,7 @@ const Menu = [
 
 export default function SideBar() {
   const [open, setOpen] = useState(true);
-  const { userName, userAvatar } = useAuth();
+  const { userName, userAvatar, isSideBarOpen, dispatch } = useAuth();
 
   // For active tab Link bg highlighting
   const pathName = usePathname();
@@ -38,12 +38,12 @@ export default function SideBar() {
     <div className={style.side_bar_wrapper}>
       <div
         className={`${style.side_bar} ${
-          open ? style.side_bar_expanded : style.side_bar_collapsed
+          isSideBarOpen ? style.side_bar_expanded : style.side_bar_collapsed
         }`}
       >
         {/* LOGO */}
         <div className="flex items-center gap-3 px-4 py-6">
-          {open && <h1 className="text-xl font-semibold">Cron-Job</h1>}
+          {isSideBarOpen && <h1 className="text-xl font-semibold">Cron-Job</h1>}
         </div>
 
         {/* MENU */}
@@ -58,14 +58,14 @@ export default function SideBar() {
                 `}
               >
                 {item.icon}
-                {open && <span className="text-sm">{item.name}</span>}
+                {isSideBarOpen && <span className="text-sm">{item.name}</span>}
               </div>
             </Link>
           ))}
         </nav>
 
         {/* FOOTER */}
-        {open && (
+        {isSideBarOpen && (
           <div className={style.sidebar_footer}>
             <hr className={style.divider} />
             <div className="flex flex-row gap-3 justify-center items-center mb-2">
@@ -107,9 +107,11 @@ export default function SideBar() {
       {/* SIDEBAR TOGGLE BUTTON */}
       <PanelRight
         className={`${style.toggle_button} ${
-          !open ? style.toggle_button_collapsed : ""
+          !isSideBarOpen ? style.toggle_button_collapsed : ""
         }`}
-        onClick={() => setOpen(!open)}
+        onClick={() =>
+          dispatch({ type: "Toggle_Side_Bar", payload: !isSideBarOpen })
+        }
       />
     </div>
   );
