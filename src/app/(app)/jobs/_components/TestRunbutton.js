@@ -35,7 +35,7 @@ function TestRunbutton() {
       const data = await res.json();
       setIsLoading(false);
       // console.log("Test button clicked with Valid URL");
-      console.log("Data ->", data);
+      // console.log("Data ->", data);
       setTestData(data);
     } catch (error) {
       console.error(error);
