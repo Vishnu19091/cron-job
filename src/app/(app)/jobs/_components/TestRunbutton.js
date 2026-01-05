@@ -26,9 +26,6 @@ function TestRunbutton() {
       setIsLoading(true);
       const res = await fetch("/api/testURL", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           url: jobURL,
           method: jobMethod,
@@ -64,15 +61,15 @@ function TestRunbutton() {
           <Spinner />
         ) : (
           <>
-            <h3 className="text-xl">Name: {jobName}</h3>
-            <p>OK: {testData.ok ? "True" : "False"}</p>
-            <p>Status: {testData.statusText}</p>
-            <p>Duration in ms: {testData.durationMs}</p>
+            <h3 className="text-xl text-start">Name: {jobName}</h3>
+            <p className="text-start">OK: {testData.ok ? "True" : "False"}</p>
+            <p className="text-start">Status: {testData.statusText}</p>
+            <p className="text-start">Duration in ms: {testData.durationMs}</p>
 
             {testData.data && (
               <>
                 <h4 className="mt-3 text-xl text-white">Response Body</h4>
-                <pre className="bg-[#171717] text-white p-2 rounded-lg text-sm">
+                <pre className="bg-[#171717] text-white p-2 rounded-lg text-sm text-start">
                   {JSON.stringify(testData.data, null, 2)}
                 </pre>
               </>

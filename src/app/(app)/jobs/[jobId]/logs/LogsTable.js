@@ -9,10 +9,11 @@ export default function LogsTable({ logs }) {
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
+  // console.log(logs);
   // Sorting
   const sortedLogs = [...logs].sort((a, b) => {
     if (sortBy === "timestamp")
-      return new Date(b.timestamp) - new Date(a.timestamp);
+      return new Date(b.$createdAt) - new Date(a.$createdAt);
     if (sortBy === "responseTime") return b.responseTime - a.responseTime;
     if (sortBy === "statusCode") return b.statusCode - a.statusCode;
     return 0;
@@ -20,8 +21,8 @@ export default function LogsTable({ logs }) {
 
   // Filtering
   const filteredLogs = sortedLogs.filter((log) => {
-    if (filter === "success") return log.result === true;
-    if (filter === "failed") return log.result === false;
+    if (filter === "success") return log.success === true;
+    if (filter === "failed") return log.success === false;
     return true;
   });
 
@@ -76,7 +77,7 @@ export default function LogsTable({ logs }) {
                     }
                   >
                     <td className={styles.td}>
-                      {new Date(log.timestamp).toLocaleString()}
+                      {new Date(log.$createdAt).toLocaleString()}
                     </td>
 
                     <td className={styles.td}>{log.statusCode}</td>
@@ -85,10 +86,10 @@ export default function LogsTable({ logs }) {
 
                     <td
                       className={`${styles.td} ${
-                        log.result ? styles.success : styles.failed
+                        log.success ? styles.success : styles.failed
                       }`}
                     >
-                      {log.result ? "Success" : "Failed"}
+                      {log.success ? "Success" : "Failed"}
                     </td>
 
                     <td className={`${styles.td} ${styles.viewBtn}`}>

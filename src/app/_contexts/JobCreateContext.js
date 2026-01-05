@@ -74,6 +74,16 @@ function reducer(state, action) {
         humanText: action.payload.text,
       };
 
+    case "SET_EDIT_CRON":
+      return {
+        ...state,
+        jobName: action.payload.name,
+        jobURL: action.payload.url,
+        jobMethod: action.payload.method,
+        jobBody: action.payload.body || "",
+        cronExpression: action.payload.cronExp,
+      };
+
     // case "SET_TEXT":
     //   return {...state, humanText:action.payload}
 

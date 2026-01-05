@@ -20,19 +20,6 @@
   color: #ffb38a;
 }
 
-.header a {
-  border: 1px solid white;
-  padding: 10px;
-  border-radius: 0.5rem;
-  color: white;
-  transition: all 300ms ease-in-out;
-}
-
-.header a:hover {
-  background-color: white;
-  color: #0f0f0f;
-}
-
 /* -------------------------
     Light Theme
 ------------------------- 

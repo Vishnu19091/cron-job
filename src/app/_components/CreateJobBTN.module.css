@@ -1,0 +1,17 @@
+.link_btn {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: fit-content;
+
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 0.5rem;
+  color: white;
+  transition: all 300ms ease-in-out;
+}
+
+.link_btn:hover {
+  background-color: white;
+  color: #0f0f0f;
+}

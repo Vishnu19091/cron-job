@@ -8,13 +8,14 @@ import styles from "./_styles/jobs.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import CreateNewCronJobBTN from "@/app/_components/CreateJobBTN";
 
 export default function Page() {
   const [jobs, setJobs] = useState([]);
 
   async function loadJobs() {
     const res = await getUserJobs();
-    // console.log(res);
+   // console.log(res);
 
     setJobs(res.rows);
   }
@@ -38,7 +39,7 @@ export default function Page() {
     <div className={styles.layer}>
       <div className={styles.header}>
         <h1>Cronjobs</h1>
-        <Link href="/jobs/create">Create job</Link>
+        <CreateNewCronJobBTN />
       </div>
 
       <table className={styles.table}>
@@ -46,7 +47,7 @@ export default function Page() {
           <tr>
             <th>Job Title, URL</th>
             <th>Last Run</th>
-            <th>Scheduled</th>
+            <th>Schedule Frequency</th>
             <th>Status</th>
             <th>Method</th>
             <th>Preference</th>
@@ -62,8 +63,10 @@ export default function Page() {
                   <span className={styles.jobUrl}>{rows.url}</span>
                 </td>
 
-                <td>{rows.lastRun}</td>
-                <td>{rows.schedule}</td>
+                <td>{new Date(rows.lastRun).toLocaleString()}</td>
+                <td title="change the expression in to words">
+                  {rows.cronExp}
+                </td>
 
                 <td>
                   <span

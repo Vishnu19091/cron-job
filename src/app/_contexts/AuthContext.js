@@ -6,11 +6,18 @@ provides
 User name
 User email
 User Avatar
+side bar
 
 and also global theme state (Dark/White mode)
 */
 
-import { createContext, useContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 const AuthContext = createContext();
 
@@ -22,6 +29,10 @@ const initialState = {
   userAvatar: null,
   userVerified: null,
   mode: "dark",
+  isSideBarOpen:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("sidebar-open")) ?? true
+      : true,
 };
 
 function reducer(state, action) {
@@ -50,6 +61,9 @@ function reducer(state, action) {
         error: action.payload,
       };
 
+    case "Toggle_Side_Bar":
+      return { ...state, isSideBarOpen: action.payload };
+
     default:
       throw new Error("Unknown action type");
   }
@@ -57,7 +71,15 @@ function reducer(state, action) {
 
 function AuthProvider({ children }) {
   const [
-    { userName, userEmail, userAvatar, userVerified, isLoading, dark },
+    {
+      userName,
+      userEmail,
+      userAvatar,
+      userVerified,
+      isLoading,
+      mode,
+      isSideBarOpen,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
@@ -66,7 +88,15 @@ function AuthProvider({ children }) {
       dispatch({ type: "loading" });
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/user`,
+          {
+            credentials: "include",
+          }
+        );
+
+        if (!res.ok) throw new Error("Unauthorized!");
+
         const data = await res.json();
         // console.log(data);
 
@@ -82,6 +112,25 @@ function AuthProvider({ children }) {
     loadSession();
   }, []);
 
+  // To store the sidebar state
+  useEffect(() => {
+    localStorage.setItem("sidebar-open", JSON.stringify(isSideBarOpen));
+  }, [isSideBarOpen]);
+
+  const [hydrated, setHydrated] = useState(false);
+
+  /*
+  This prevents the jumping UI of the sidebar
+  that is we are determining the hydration here
+  once SSR is completed we try rendering the component on the client-side
+  */
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  // allows rendering components only after hydration is completed
+  if (!hydrated) return null;
+
   return (
     <AuthContext.Provider
       value={{
@@ -90,7 +139,9 @@ function AuthProvider({ children }) {
         userAvatar,
         userVerified,
         isLoading,
-        dark,
+        mode,
+        isSideBarOpen,
+        dispatch,
       }}
     >
       {children}

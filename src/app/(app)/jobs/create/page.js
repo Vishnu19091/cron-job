@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { createCronJob } from "@/app/_lib/server/server-data-service";
 import { useRouter } from "next/navigation";
-import CrontabExpression from "./_components/CrontabExpression";
-import CronScheduleType from "./_components/CronScheduleType";
-import TestRunbutton from "./_components/TestRunbutton";
-import CronScheduleMethod from "./_components/CronScheduleMethod";
+import CrontabExpression from "../_components/CrontabExpression";
+import CronScheduleType from "../_components/CronScheduleType";
+import TestRunbutton from "../_components/TestRunbutton";
+import CronScheduleMethod from "../_components/CronScheduleMethod";
 import {
   CreateJobProvider,
   useCreateJob,
@@ -265,11 +265,16 @@ export default function Page() {
     const toastJob = toast.loading("Creating Job...");
     try {
       setIsLoading(true);
+
+      const nextRun = new Date();
+      nextRun.setMinutes(nextRun.getMinutes() + 1);
+     // console.log(nextRun);
       const res = await createCronJob(
         jobName,
         jobURL,
         jobMethod,
-        cronExpression
+        cronExpression,
+        nextRun
       );
       const id = res.$id;
       // console.log(id);
@@ -332,7 +337,7 @@ export default function Page() {
                 className="border-2 border-violet-900 hover:bg-violet-500"
                 type="submit"
               >
-                CREATE
+                {isLoading ? "CREATING..." : "CREATE"}
               </button>
             </div>
           </form>

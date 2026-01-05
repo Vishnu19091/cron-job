@@ -66,7 +66,7 @@ export async function getUserJobs() {
   }
 }
 
-export async function createCronJob(name, url, method, cronExp) {
+export async function createCronJob(name, url, method, cronExp, nextRun) {
   const { account, tablesDB } = await createSessionClient();
 
   try {
@@ -84,6 +84,7 @@ export async function createCronJob(name, url, method, cronExp) {
         method,
         cronExp,
         ownerId,
+        nextRun,
         timeZone: userTimeZone,
       },
     });
@@ -91,6 +92,54 @@ export async function createCronJob(name, url, method, cronExp) {
     return result;
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function getJob(jobId) {
+  const { tablesDB } = await createSessionClient();
+
+  try {
+    const result = await tablesDB.getRow({
+      databaseId: dbID,
+      tableId: jobsCollections,
+      rowId: jobId,
+    });
+
+    // console.log(result);
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function updateJob(
+  jobId,
+  url,
+  method,
+  body = null,
+  status,
+  cronExp
+) {
+  const { tablesDB } = await createSessionClient();
+
+  try {
+    const result = await tablesDB.updateRow({
+      databaseId: dbID,
+      tableId: jobsCollections,
+      rowId: jobId,
+      data: {
+        url,
+        method,
+        body,
+        status,
+        cronExp,
+      },
+    });
+
+    console.log(result);
+    return result;
+  } catch (error) {
+    return error;
   }
 }
 
