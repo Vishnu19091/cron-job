@@ -15,7 +15,7 @@ export default function Page() {
 
   async function loadJobs() {
     const res = await getUserJobs();
-    console.log(res);
+   // console.log(res);
 
     setJobs(res.rows);
   }
