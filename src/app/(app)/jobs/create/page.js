@@ -268,7 +268,7 @@ export default function Page() {
 
       const nextRun = new Date();
       nextRun.setMinutes(nextRun.getMinutes() + 1);
-      console.log(nextRun);
+     // console.log(nextRun);
       const res = await createCronJob(
         jobName,
         jobURL,
