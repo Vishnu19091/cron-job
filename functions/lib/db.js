@@ -8,7 +8,6 @@ import { getDatabases } from "./appwrite.js";
 export async function getDueJobs(nowISO) {
   const databaseId = process.env.DATABASE_ID;
   const jobsCollectionId = process.env.JOBS_COLLECTION_ID;
-  const LogsCollectionId = process.env.LOGS_COLLECTION_ID;
 
   if (!databaseId || !jobsCollectionId) {
     throw new Error(

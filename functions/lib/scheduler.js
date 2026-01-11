@@ -1,3 +1,4 @@
+import { computeNextRun } from "./computeNextRun.js";
 import { getDueJobs, InsertUserJobLog, updateJobMetaData } from "./db.js";
 import { request } from "./request.js";
 
@@ -24,8 +25,11 @@ export async function runScheduler() {
         responseBody: data,
       });
 
-      const nextRun = new Date(now);
-      nextRun.setMinutes(nextRun.getMinutes() + 15);
+      const nextRun = computeNextRun({
+        cronExp: job.cronExp,
+        timeZone: job.timeZone,
+        fromDate: now,
+      });
 
       await updateJobMetaData({
         jobId: job.$id,
