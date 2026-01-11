@@ -1,4 +1,4 @@
-const MAX_LEN = 30000;
+const MAX_LEN = 10000;
 
 export function serializeResponseBody(body) {
   if (body === null || body === undefined) {

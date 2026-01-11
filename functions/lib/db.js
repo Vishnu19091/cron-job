@@ -1,5 +1,6 @@
 import { Query } from "node-appwrite";
 import { getDatabases } from "./appwrite.js";
+import { serializeResponseBody } from "./serializeResponse.js";
 
 /**
  * Fetches all DueJobs from DB
@@ -59,7 +60,7 @@ export async function InsertUserJobLog({
     statusCode, // MUST be integer
     responseTime, // MUST be integer
     success: !error, // REQUIRED boolean
-    responseBody: responseBody ?? null,
+    responseBody: serializeResponseBody(responseBody) ?? null,
     error: error ?? null,
   });
 }
