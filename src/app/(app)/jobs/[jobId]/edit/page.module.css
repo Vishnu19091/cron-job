@@ -93,3 +93,51 @@
 .form button:hover {
   transform: scale(1.03);
 }
+
+@media (max-width: 768px) {
+  .layout_wrapper {
+    padding: 1.5rem;
+    align-items: center; /* prevent vertical cutoff */
+  }
+
+  .gradient_border {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  .layout_form_container {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .form {
+    gap: 12px;
+  }
+
+  .form input,
+  .form select,
+  .form textarea {
+    padding: 0.8rem;
+    font-size: 1rem; /* better tap target */
+  }
+
+  .form button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* ============================
+   Small Phones (≤ 380px)
+============================ */
+@media (max-width: 380px) {
+  .layout_form_container {
+    padding: 1.2rem;
+  }
+
+  .form label {
+    font-size: 0.85rem;
+  }
+}

@@ -2,12 +2,14 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin-top: 15px;
 }
 
 /* Controls above the table */
 .controls {
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
   align-items: center;
 }
 
@@ -116,4 +118,11 @@
 .noLogsCell {
   padding: 20px;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    gap: 15px;
+  }
 }

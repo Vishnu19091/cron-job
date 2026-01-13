@@ -15,7 +15,7 @@ export default function Page() {
 
   async function loadJobs() {
     const res = await getUserJobs();
-   // console.log(res);
+    // console.log(res);
 
     setJobs(res.rows);
   }
@@ -42,85 +42,89 @@ export default function Page() {
         <CreateNewCronJobBTN />
       </div>
 
-      <table className={styles.table}>
-        <thead className={styles.thead}>
-          <tr>
-            <th>Job Title, URL</th>
-            <th>Last Run</th>
-            <th>Schedule Frequency</th>
-            <th>Status</th>
-            <th>Method</th>
-            <th>Preference</th>
-          </tr>
-        </thead>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+            <tr>
+              <th>Job Title, URL</th>
+              <th>Last Run</th>
+              <th>Schedule Frequency</th>
+              <th>Status</th>
+              <th>Method</th>
+              <th>Preference</th>
+            </tr>
+          </thead>
 
-        {jobs.length > 0 ? (
-          <tbody>
-            {jobs.map((rows) => (
-              <tr key={rows.$id}>
-                <td className={styles.titleCell}>
-                  <span className={styles.jobName}>{rows.name}</span>
-                  <span className={styles.jobUrl}>{rows.url}</span>
-                </td>
+          {jobs.length > 0 ? (
+            <tbody>
+              {jobs.map((rows) => (
+                <tr key={rows.$id}>
+                  <td className={styles.titleCell}>
+                    <span className={styles.jobName}>{rows.name}</span>
+                    <span className={styles.jobUrl}>{rows.url}</span>
+                  </td>
 
-                <td>{new Date(rows.lastRun).toLocaleString()}</td>
-                <td title="change the expression in to words">
-                  {rows.cronExp}
-                </td>
+                  <td>{new Date(rows.lastRun).toLocaleString()}</td>
+                  <td title="change the expression in to words">
+                    {rows.cronExp}
+                  </td>
 
-                <td>
-                  <span
-                    className={`${styles.status} ${
-                      rows.status === "active"
-                        ? styles.active
-                        : rows.status === "paused"
-                        ? styles.paused
-                        : styles.failed
-                    }`}
-                  >
-                    {rows.status}
-                  </span>
-                </td>
-
-                <td>
-                  <span className={styles.method}>{rows.method}</span>
-                </td>
-
-                <td>
-                  <div className={styles.actions}>
-                    <Link
-                      href={`/jobs/${rows.$id}/edit`}
-                      className={styles.editLink}
+                  <td>
+                    <span
+                      className={`${styles.status} ${
+                        rows.status === "active"
+                          ? styles.active
+                          : rows.status === "paused"
+                          ? styles.paused
+                          : rows.status === "failed"
+                          ? styles.failed
+                          : styles.disabled
+                      }`}
                     >
-                      Edit Job
-                    </Link>
-                    <Link
-                      href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
-                      className={styles.editLink}
-                    >
-                      View Logs
-                    </Link>
-                    <button
-                      onClick={() => onDelete(rows.$id, rows.name)}
-                      className={styles.deleteBtn}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                      {rows.status}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span className={styles.method}>{rows.method}</span>
+                  </td>
+
+                  <td>
+                    <div className={styles.actions}>
+                      <Link
+                        href={`/jobs/${rows.$id}/edit`}
+                        className={styles.editLink}
+                      >
+                        Edit Job
+                      </Link>
+                      <Link
+                        href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
+                        className={styles.editLink}
+                      >
+                        View Logs
+                      </Link>
+                      <button
+                        onClick={() => onDelete(rows.$id, rows.name)}
+                        className={styles.deleteBtn}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <tbody>
+              <tr>
+                <td colSpan={6} className={styles.not_found}>
+                  No Jobs Found
                 </td>
               </tr>
-            ))}
-          </tbody>
-        ) : (
-          <tbody>
-            <tr>
-              <td colSpan={6} className={styles.not_found}>
-                No Jobs Found
-              </td>
-            </tr>
-          </tbody>
-        )}
-      </table>
+            </tbody>
+          )}
+        </table>
+      </div>
     </div>
   );
 }

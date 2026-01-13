@@ -1,17 +1,36 @@
-/* Wrapper that holds the sidebar + toggle button */
+/* ============================
+   Wrapper
+============================ */
 .side_bar_wrapper {
   position: relative;
   height: 100vh;
   display: flex;
 }
 
-/* MAIN SIDEBAR BOX */
+/* ============================
+   Mobile Menu Button
+============================ */
+.mobile_menu_btn {
+  display: none;
+}
+
+/* ============================
+   Sidebar Base (Desktop)
+============================ */
 .side_bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 14rem;
+  height: 100dvh;
+  max-height: 100dvh;
+
   background: #030303;
-  height: 100%;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  margin: 5px;
+  /* margin: 5px; */
 
   display: flex;
   flex-direction: column;
@@ -21,34 +40,32 @@
 
   /* Smooth open/close animation */
   transition: width 0.3s ease, padding 0.3s ease;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* Collapsed width state (when open=false) */
 .side_bar_collapsed {
-  width: 4.5rem !important;
+  width: 4.5rem;
   justify-content: center;
 }
 
-/* Expanded width state (when open=true) */
 .side_bar_expanded {
-  width: 14rem !important;
+  width: 14rem;
 }
 
-/* Menu container */
+/* ============================
+   Menu
+============================ */
 .menu {
   display: flex;
   flex-direction: column;
-  justify-content: self-start;
   gap: 0.5rem;
-  margin: inherit;
+  margin: 15px;
 }
 
-/* Individual menu items */
 .menu_item {
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 0.75rem;
 
   padding: 0.75rem;
@@ -72,8 +89,9 @@
 .menu_item_active {
   background: rgba(111, 0, 170, 0.35) !important;
 }
-
-/* Footer section */
+/* ============================
+   Footer
+============================ */
 .sidebar_footer {
   display: flex;
   flex-direction: column;
@@ -82,7 +100,6 @@
   text-align: center;
 }
 
-/* Horizontal line */
 .divider {
   width: 80%;
   height: 1px;
@@ -90,24 +107,70 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* Toggle button */
+/* ============================
+   Toggle Button (Desktop)
+============================ */
 .toggle_button {
-  position: absolute;
-  top: 3rem;
-  right: 1rem;
-
   background: black;
-  color: rgb(255, 255, 255);
+  color: white;
 
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: left 0.3s ease, transform 0.2s ease;
   scale: 1.4;
-}
 
-.toggle_button_collapsed {
-  right: 2rem;
+  position: relative;
 }
 
 .toggle_button:hover {
   scale: 1.5;
+}
+
+/* ============================
+   Mobile (FULL SCREEN MODAL)
+============================ */
+@media (max-width: 768px) {
+  .mobile_menu_btn {
+    display: block;
+    position: fixed;
+    top: 0.5rem;
+    left: 1rem;
+    z-index: 1001;
+    background: #000;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .side_bar {
+    position: fixed; /* 🔑 REQUIRED */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100vw;
+    height: 100dvh; /* mobile-safe */
+    max-height: 100dvh;
+
+    margin: 0;
+    z-index: 1000;
+
+    overflow-y: auto; /* internal scroll */
+  }
+
+  .side_bar_collapsed {
+    display: none;
+  }
+
+  .side_bar_expanded {
+    display: flex;
+  }
+
+  .sidebar_footer {
+    margin-top: auto;
+  }
+
+  .toggle_button {
+    display: none;
+  }
 }

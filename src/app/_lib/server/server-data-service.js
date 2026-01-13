@@ -33,7 +33,7 @@ export async function UserJobLogs(jobId) {
     const res = await tablesDB.listRows({
       databaseId: dbID,
       tableId: logsCollection,
-      queries: [Query.equal("jobId", jobId)],
+      queries: [Query.equal("jobId", jobId), Query.limit(200)],
     });
 
     // console.log(res);
@@ -123,17 +123,22 @@ export async function updateJob(
   const { tablesDB } = await createSessionClient();
 
   try {
+    const data = {
+      url,
+      method,
+      status,
+      cronExp,
+    };
+
+    if (body !== null || body !== undefined) {
+      data.body = body;
+    }
+
     const result = await tablesDB.updateRow({
       databaseId: dbID,
       tableId: jobsCollections,
       rowId: jobId,
-      data: {
-        url,
-        method,
-        body,
-        status,
-        cronExp,
-      },
+      data,
     });
 
     console.log(result);

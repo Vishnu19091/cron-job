@@ -3,7 +3,8 @@
 ============================ */
 .layer {
   width: 90%;
-  margin: 2rem;
+  margin: 2rem auto;
+  padding: 10px;
 }
 
 .header {
@@ -35,12 +36,18 @@
 /* -------------------------
    Table Layout
 ============================ */
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #0005;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
   background: var(--table-bg, #0f0f0f);
   color: var(--table-text, #eaeaea);
-  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
 }
@@ -53,7 +60,6 @@
 .table th,
 .table td {
   padding: 14px 18px;
-  border-bottom: 1px solid #2c2c2c;
   text-align: left;
   font-size: 0.95rem;
 }
@@ -114,6 +120,12 @@
   border: 1px solid #c14c4c;
 }
 
+.disabled {
+  background: #0f0f0f;
+  color: #c9c9c9;
+  border: 1px solid #818181;
+}
+
 /* ============================
    Method Tag
 ============================ */
@@ -161,4 +173,10 @@
 
 .table .not_found {
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .layer {
+    padding: 0;
+  }
 }

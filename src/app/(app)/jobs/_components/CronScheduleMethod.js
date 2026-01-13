@@ -20,7 +20,7 @@ function CronScheduleMethod() {
       {/* If method is POST/PUT conditionally render body component */}
       {jobMethod === "POST" || jobMethod === "PUT" ? (
         <textarea
-          className="w-full resize-none"
+          className="w-full h-64 resize-none"
           id="body"
           name="body"
           placeholder={"Request body goes here"}

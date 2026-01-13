@@ -9,25 +9,36 @@ import TestRunbutton from "../../_components/TestRunbutton";
 import { useCreateJob } from "@/app/_contexts/JobCreateContext";
 import styles from "./page.module.css";
 import { toast } from "react-toastify";
+import CrontabExpression from "../../_components/CrontabExpression";
+import { onCronInputChange } from "../../_components/cronController";
 
 function Page() {
-  const { jobName, jobURL, jobMethod, JobBody, cronExpression, dispatch } =
-    useCreateJob();
+  const {
+    jobName,
+    jobURL,
+    jobMethod,
+    jobBody,
+    cronExpression,
+    humanText,
+    dispatch,
+  } = useCreateJob();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [jobStatus, setJobStatus] = useState("");
+  const [jobStatus, setJobStatus] = useState("NULL");
 
   async function getJobData(jobId) {
     const { name, url, status, cronExp, method, body, timeZone } = await getJob(
       jobId
     );
 
+    setJobStatus(status);
+
     dispatch({
       type: "SET_EDIT_CRON",
-      payload: { name, url, method, body, cronExpression: cronExp },
+      payload: { name, url, method, body, cronExp },
     });
 
-    console.log({ name, url, status, cronExp, method, body, timeZone });
+    // console.log({ name, url, status, cronExp, method, body, timeZone });
   }
 
   const { jobId } = useParams();
@@ -43,6 +54,7 @@ function Page() {
 
     if (!jobName || !jobMethod || !jobURL) {
       toast.error("All Fields are required!");
+      return;
     }
 
     if (!jobURL.startsWith("https://") && !jobURL.startsWith("http://")) {
@@ -55,23 +67,23 @@ function Page() {
     try {
       setIsLoading(true);
 
+      const shouldSendBody = jobMethod === "PUT" || jobMethod === "POST";
       const res = await updateJob(
         jobId,
         jobURL,
         jobMethod,
-        JobBody,
+        shouldSendBody ? jobBody : null,
         jobStatus,
         cronExpression
       );
-      const id = res.$id;
-      // console.log(id);
+      // console.log(res);
       toast.update(toastJob, {
         render: `Job "${jobName}" Updated Successfully 🎉`,
         type: "success",
         isLoading: false,
         autoClose: 2000,
       });
-      if (res) router.push(`/jobs/${id}/logs?name=${jobName}`);
+      if (res) router.push(`/jobs/${jobId}/logs?name=${jobName}`);
     } catch (error) {
       toast.update(toastJob, {
         render: error.message || "Failed Updating Job!",
@@ -91,16 +103,32 @@ function Page() {
         <div className={styles.gradient_border}>
           <div className={styles.layout_form_container}>
             <form onSubmit={OnUpdate} className={styles.form}>
-              <h4>
-                Edit Page for the Job -{" "}
-                <span className="font-bold">{jobName}</span>
-              </h4>
+              <div className="flex flex-row gap-2 justify-center items-center">
+                <h4>
+                  Edit Page for the Job -{" "}
+                  <span className="font-bold">{jobName}</span>
+                </h4>
+
+                <span
+                  className={` border p-2 font-bold ${
+                    jobStatus === "active"
+                      ? "border-green-400 bg-green-800 text-green-100"
+                      : jobStatus === "paused"
+                      ? "border-yellow-400 bg-yellow-800 text-yellow-100"
+                      : jobStatus === "failed"
+                      ? "border-red-400 bg-red-800 text-red-100"
+                      : "border-gray-400 bg-gray-800 text-gray-100"
+                  }`}
+                >
+                  {jobStatus}
+                </span>
+              </div>
               <div className="flex flex-col gap-5">
                 <label>Job name</label>
                 <input
                   placeholder="Enter Job name"
                   type="text"
-                  defaultValue={jobName}
+                  value={jobName}
                   onChange={(e) => {
                     dispatch({ type: "SET_JOB_NAME", payload: e.target.value });
                   }}
@@ -109,12 +137,27 @@ function Page() {
                 <label>URL</label>
                 <input
                   placeholder="Target URL"
-                  defaultValue={jobURL}
+                  value={jobURL}
                   onChange={(e) =>
                     dispatch({ type: "SET_JOB_URL", payload: e.target.value })
                   }
                 />
               </div>
+
+              <label>Status</label>
+              <select
+                name="status"
+                onChange={(e) => {
+                  // console.log(e.target.value);
+                  setJobStatus(e.target.value);
+                }}
+                value={jobStatus}
+              >
+                <option value="active">Active</option>
+                <option value="paused">Pause</option>
+                <option value="failed">Failed</option>
+                <option value="disabled">Disable</option>
+              </select>
 
               <div className="flex flex-col gap-5">
                 <CronScheduleMethod />
@@ -122,7 +165,17 @@ function Page() {
                 <CronScheduleType />
               </div>
 
-              {/* <CrontabExpression onCronInputChange={onCronInputChange} /> */}
+              <CrontabExpression
+                value={cronExpression}
+                humanText={humanText}
+                onFocus={() =>
+                  dispatch({ type: "SET_SCHEDULE_TYPE", payload: "CUSTOM" })
+                }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  onCronInputChange({ value, dispatch });
+                }}
+              />
 
               <div className="mt-3 flex justify-between">
                 <TestRunbutton />

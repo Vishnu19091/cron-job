@@ -7,68 +7,9 @@ import CrontabExpression from "../_components/CrontabExpression";
 import CronScheduleType from "../_components/CronScheduleType";
 import TestRunbutton from "../_components/TestRunbutton";
 import CronScheduleMethod from "../_components/CronScheduleMethod";
-import {
-  CreateJobProvider,
-  useCreateJob,
-} from "@/app/_contexts/JobCreateContext";
+import { useCreateJob } from "@/app/_contexts/JobCreateContext";
 import { toast } from "react-toastify";
-
-/**
- * Function to parse cron-expression **`* /1 * * *`**
- * @param {*} cron
- * @returns
- */
-function parseCronExpression(cron) {
-  const parts = cron.trim().split(" ");
-  if (parts.length > 6) return null;
-
-  const [min, hour, day, month, week] = parts;
-
-  // */N * * * *
-  if (
-    min.startsWith("*/") &&
-    hour === "*" &&
-    day === "*" &&
-    month === "*" &&
-    week === "*"
-  ) {
-    return {
-      type: "EVERY_MINUTES",
-      intervalMinutes: Number(min.replace("*/", "")),
-    };
-  }
-
-  // m h * * *
-  if (day === "*" && month === "*" && week === "*") {
-    return {
-      type: "DAILY",
-      hour,
-      minute: min,
-    };
-  }
-
-  // m h D * *
-  if (month === "*" && week === "*") {
-    return {
-      type: "MONTHLY",
-      day,
-      hour,
-      minute: min,
-    };
-  }
-
-  // m h 1 M *
-  if (day === "1" && week === "*") {
-    return {
-      type: "YEARLY",
-      month,
-      hour,
-      minute: min,
-    };
-  }
-
-  return null;
-}
+import { onCronInputChange } from "../_components/cronController";
 
 export default function Page() {
   const router = useRouter();
@@ -85,113 +26,9 @@ export default function Page() {
     monthlyDay,
     yearlyMonth,
     cronExpression,
+    humanText,
     dispatch,
   } = useCreateJob();
-
-  /**
-   * Works only for manually changed cron-tab expression
-   * @param {*} value
-   * @returns cron-expression
-   */
-  function onCronInputChange(value) {
-    dispatch({
-      type: "SET_CRON",
-      payload: { cron: value, text: "Custom cron schedule" },
-    });
-    // setCronExpression(value);
-
-    const parsed = parseCronExpression(value);
-    if (!parsed) {
-      dispatch({ type: "SET_SCHEDULE_TYPE", payload: "CUSTOM" });
-      return;
-    }
-
-    dispatch({ type: "SET_SCHEDULE_TYPE", payload: parsed.type });
-
-    switch (parsed.type) {
-      case "EVERY_MINUTES":
-        dispatch({
-          type: "SET_INTERVAL_MINUTES",
-          payload: parsed.intervalMinutes,
-        });
-
-        dispatch({
-          type: "SET_CRON",
-          payload: {
-            cron: value,
-            text: `Runs every ${parsed.intervalMinutes} minute(s)`,
-          },
-        });
-
-        break;
-
-      case "DAILY":
-        dispatch({
-          type: "SET_DAILY_TIME",
-          payload: { hour: parsed.hour, minute: parsed.minute },
-        });
-
-        dispatch({
-          type: "SET_CRON",
-          payload: {
-            cron: value,
-            text: `Runs every day at ${parsed.hour}:${parsed.minute}`,
-          },
-        });
-        break;
-
-      case "MONTHLY":
-        //       setMonthlyDay(parsed.day);
-        //       setDailyHour(parsed.hour);
-        //       setDailyMinute(parsed.minute);
-        dispatch({
-          type: "SET_MONTHLY_DAY",
-          payload: {
-            day: parsed.day,
-            hour: parsed.hour,
-            minute: parsed.minute,
-          },
-        });
-        //       setHumanText(
-        //         `Runs every month on day ${parsed.day} at ${parsed.hour}:${parsed.minute}`
-        //       );
-        dispatch({
-          type: "SET_CRON",
-          payload: {
-            cron: value,
-            text: `Runs every month on day ${parsed.day} at ${parsed.hour}:${parsed.minute}`,
-          },
-        });
-        break;
-
-      case "YEARLY":
-        //       setYearlyMonth(parsed.month);
-        //       setDailyHour(parsed.hour);
-        //       setDailyMinute(parsed.minute);
-        dispatch({
-          type: "SET_YEARLY_MONTH",
-          payload: {
-            month: parsed.month,
-            hour: parsed.hour,
-            minute: parsed.minute,
-          },
-        });
-        //       setHumanText(
-        //         `Runs every year in month ${parsed.month} at ${parsed.hour}:${parsed.minute}`
-        //       );
-        dispatch({
-          type: "SET_CRON",
-          payload: {
-            cron: value,
-            text: `Runs every year on day 1 of month ${parsed.month} at ${parsed.hour}:${parsed.minute}`,
-          },
-        });
-        break;
-
-      default:
-        throw new Error("Invalid Cron-tab Expression");
-    }
-  }
 
   /**
    * Works for select options
@@ -218,8 +55,9 @@ export default function Page() {
         break;
 
       case "YEARLY":
-        cron = `${dailyMinute} ${dailyHour} ${yearlyMonth} *`;
-        text = `Runs every year on day 1 of month ${yearlyMonth} at ${dailyHour}:${dailyMinute}`;
+        cron = `${dailyMinute} ${dailyHour} ${monthlyDay} ${yearlyMonth} *`;
+        console.log(cron);
+        text = `Runs every year on day ${monthlyDay} of month ${yearlyMonth} at ${dailyHour}:${dailyMinute}`;
         break;
 
       case "CUSTOM":
@@ -229,8 +67,6 @@ export default function Page() {
         throw new Error("Invalid cron-tab expression");
     }
 
-    //   setCronExpression(cron);
-    //   setHumanText(text);
     dispatch({
       type: "SET_CRON",
       payload: { cron: cron, text: text },
@@ -268,7 +104,7 @@ export default function Page() {
 
       const nextRun = new Date();
       nextRun.setMinutes(nextRun.getMinutes() + 1);
-     // console.log(nextRun);
+      // console.log(nextRun);
       const res = await createCronJob(
         jobName,
         jobURL,
@@ -328,7 +164,20 @@ export default function Page() {
               <CronScheduleType />
             </div>
 
-            <CrontabExpression onCronInputChange={onCronInputChange} />
+            <CrontabExpression
+              value={cronExpression}
+              humanText={humanText}
+              onFocus={() =>
+                dispatch({
+                  type: "SET_SCHEDULE_TYPE",
+                  payload: "CUSTOM",
+                })
+              }
+              onChange={(e) => {
+                const value = e.target.value;
+                onCronInputChange({ value, dispatch });
+              }}
+            />
 
             <div className="mt-3 flex justify-between">
               <TestRunbutton />

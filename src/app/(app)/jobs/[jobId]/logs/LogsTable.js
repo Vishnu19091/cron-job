@@ -9,7 +9,7 @@ export default function LogsTable({ logs }) {
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
-  // console.log(logs);
+  console.log(logs);
   // Sorting
   const sortedLogs = [...logs].sort((a, b) => {
     if (sortBy === "timestamp")
