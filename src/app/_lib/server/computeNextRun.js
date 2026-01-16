@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 
 /**
  * Computes the next run time for a cron job
- * (Scheduler Function)
+ * (App)
  * @param {Object} params
  * @param {string} params.cronExp
  * @param {string} params.timeZone

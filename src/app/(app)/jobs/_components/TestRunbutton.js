@@ -5,7 +5,7 @@ import Spinner from "@/app/_components/Spinner";
 import { toast } from "react-toastify";
 
 function TestRunbutton() {
-  const { jobURL, jobName, jobMethod } = useCreateJob();
+  const { jobURL, jobName, jobMethod, jobBody } = useCreateJob();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +29,7 @@ function TestRunbutton() {
         body: JSON.stringify({
           url: jobURL,
           method: jobMethod,
+          body: jobBody
         }),
       });
 

@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "appwrite": "^21.4.0",
+    "cron-parser": "^5.4.0",
     "lucide-react": "^0.555.0",
+    "luxon": "^3.7.2",
     "next": "^15.5.7",
     "node-appwrite": "^21.0.0",
     "react": "19.1.0",

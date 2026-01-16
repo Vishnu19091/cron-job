@@ -18,12 +18,17 @@ import {
   useReducer,
   useState,
 } from "react";
+import {
+  getActiveJobs,
+  getUserJobs,
+} from "@/app/_lib/server/server-data-service";
 
 const AuthContext = createContext();
 
 const initialState = {
   isLoading: false,
   error: "",
+  userId: null,
   userName: null,
   userEmail: null,
   userAvatar: null,
@@ -33,6 +38,8 @@ const initialState = {
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("sidebar-open")) ?? true
       : true,
+  totalJobs: null,
+  totalActiveJobs: null,
 };
 
 function reducer(state, action) {
@@ -44,6 +51,7 @@ function reducer(state, action) {
       return {
         ...state,
         isLoading: false,
+        userId: action.payload.$id,
         userName: action.payload.name,
         userEmail: action.payload.email,
         userAvatar: action.payload.avatar,
@@ -54,6 +62,7 @@ function reducer(state, action) {
       return {
         ...state,
         isLoading: false,
+        userId: null,
         userName: null,
         userEmail: null,
         userAvatar: null,
@@ -64,6 +73,13 @@ function reducer(state, action) {
     case "Toggle_Side_Bar":
       return { ...state, isSideBarOpen: action.payload };
 
+    case "SET_TOTAL_JOBS/ALL":
+      return {
+        ...state,
+        totalJobs: action.payload.totaljobs,
+        totalActiveJobs: action.payload.activeJobs,
+      };
+
     default:
       throw new Error("Unknown action type");
   }
@@ -72,6 +88,7 @@ function reducer(state, action) {
 function AuthProvider({ children }) {
   const [
     {
+      userId,
       userName,
       userEmail,
       userAvatar,
@@ -79,6 +96,8 @@ function AuthProvider({ children }) {
       isLoading,
       mode,
       isSideBarOpen,
+      totalJobs,
+      totalActiveJobs,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -99,6 +118,19 @@ function AuthProvider({ children }) {
 
         const data = await res.json();
         // console.log(data);
+
+        const fetchJobsTotal = await getUserJobs();
+        // console.log(fetchJobsTotal.total);
+
+        const fetchActiveJobs = await getActiveJobs();
+
+        dispatch({
+          type: "SET_TOTAL_JOBS/ALL",
+          payload: {
+            totaljobs: fetchJobsTotal.total,
+            activeJobs: fetchActiveJobs.total,
+          },
+        });
 
         dispatch({ type: "session/loaded", payload: data });
       } catch (error) {
@@ -134,6 +166,7 @@ function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
+        userId,
         userName,
         userEmail,
         userAvatar,
@@ -141,6 +174,8 @@ function AuthProvider({ children }) {
         isLoading,
         mode,
         isSideBarOpen,
+        totalJobs,
+        totalActiveJobs,
         dispatch,
       }}
     >

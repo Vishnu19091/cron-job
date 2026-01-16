@@ -4,11 +4,13 @@ import styles from "./page.module.css";
 import JobName from "./jobname";
 import Link from "next/link";
 
-export default async function Logs({ params }) {
+export default async function Logs({ params, searchParams }) {
   const jobId = (await params).jobId;
-  const logs = await UserJobLogs(jobId);
+  const name = (await searchParams).name;
+  const page = Number((await searchParams).page) || 1;
+  const limit = Number((await searchParams).limit) || 10;
+  const { logs, total } = await UserJobLogs(jobId, page, limit);
   const jobDetails = await getJob(jobId);
-  // console.log(jobDetails);
 
   return (
     <div className={styles.wrapper}>
@@ -18,6 +20,7 @@ export default async function Logs({ params }) {
           <Link href={`/jobs/${jobId}/edit`} className={styles.editLink}>
             Edit Job
           </Link>
+
           <p>
             Status: <span>{jobDetails.status}</span>
           </p>
@@ -32,7 +35,15 @@ export default async function Logs({ params }) {
             TimeZone <span>{jobDetails.timeZone}</span>
           </p>
         </div>
-        <LogsTable logs={logs} />
+
+        <LogsTable
+          logs={logs}
+          page={page}
+          total={total}
+          limit={limit}
+          jobId={jobId}
+          jobName={name}
+        />
       </div>
     </div>
   );

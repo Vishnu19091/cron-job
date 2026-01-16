@@ -11,6 +11,7 @@ import styles from "./page.module.css";
 import { toast } from "react-toastify";
 import CrontabExpression from "../../_components/CrontabExpression";
 import { onCronInputChange } from "../../_components/cronController";
+import ParseJSON from "@/app/_lib/server/parseJSON";
 
 function Page() {
   const {
@@ -23,26 +24,38 @@ function Page() {
     dispatch,
   } = useCreateJob();
 
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [jobStatus, setJobStatus] = useState("NULL");
+  const [timeZone, setTimeZone] = useState("");
 
   async function getJobData(jobId) {
-    const { name, url, status, cronExp, method, body, timeZone } = await getJob(
-      jobId
-    );
+    if (jobId != undefined || jobId != null) {
+      try {
+        const { name, url, status, cronExp, method, body, timeZone } =
+          await getJob(jobId);
 
-    setJobStatus(status);
+        setJobStatus(status);
 
-    dispatch({
-      type: "SET_EDIT_CRON",
-      payload: { name, url, method, body, cronExp },
-    });
+        setTimeZone(timeZone);
+
+        dispatch({
+          type: "SET_EDIT_CRON",
+          payload: { name, url, method, body, cronExp },
+        });
+      } catch (error) {
+        toast.error("Invalid Job ID");
+        setTimeout(() => {
+          router.push("/jobs");
+        }, 5000);
+      }
+    }
 
     // console.log({ name, url, status, cronExp, method, body, timeZone });
   }
 
   const { jobId } = useParams();
-  const router = useRouter();
 
   useEffect(() => {
     getJobData(jobId);
@@ -71,10 +84,12 @@ function Page() {
       const res = await updateJob(
         jobId,
         jobURL,
+        jobName,
         jobMethod,
-        shouldSendBody ? jobBody : null,
+        shouldSendBody ? ParseJSON(jobBody) : null,
         jobStatus,
-        cronExpression
+        cronExpression,
+        timeZone
       );
       // console.log(res);
       toast.update(toastJob, {
@@ -144,20 +159,22 @@ function Page() {
                 />
               </div>
 
-              <label>Status</label>
-              <select
-                name="status"
-                onChange={(e) => {
-                  // console.log(e.target.value);
-                  setJobStatus(e.target.value);
-                }}
-                value={jobStatus}
-              >
-                <option value="active">Active</option>
-                <option value="paused">Pause</option>
-                <option value="failed">Failed</option>
-                <option value="disabled">Disable</option>
-              </select>
+              <div className="flex flex-row gap-4 items-center">
+                <label>Status</label>
+                <select
+                  name="status"
+                  onChange={(e) => {
+                    // console.log(e.target.value);
+                    setJobStatus(e.target.value);
+                  }}
+                  value={jobStatus}
+                >
+                  <option value="active">Active</option>
+                  <option value="paused">Pause</option>
+                  <option value="failed">Failed</option>
+                  <option value="disabled">Disable</option>
+                </select>
+              </div>
 
               <div className="flex flex-col gap-5">
                 <CronScheduleMethod />

@@ -1,10 +1,26 @@
+import ParseJSON from "@/app/_lib/server/parseJSON";
+
 export async function POST(request) {
-  const { url, method } = await request.json();
+  let { url, method, body } = await request.json();
+
+  if (typeof body === "string") {
+    body = ParseJSON(body);
+  } else if (typeof body === "object") {
+    body = JSON.stringify(body);
+  }
+  // console.log(body);
 
   const start = performance.now();
 
   try {
-    const response = await fetch(url, { method });
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+
     const end = performance.now();
     const contentType = response.headers.get("Content-Type");
 

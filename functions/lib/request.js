@@ -22,8 +22,9 @@ export async function request(url, method, body = null) {
     if (typeof body === "object") {
       options.body = JSON.stringify(body);
       options.headers["Content-Type"] = "application/json";
-    } else {
-      options.body = body;
+    } else if (typeof body === "string") {
+      options.body = body; // assume already stringified
+      options.headers["Content-Type"] = "application/json";
     }
   }
 

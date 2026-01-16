@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { createSessionClient } from "./appwrite.server";
 import { redirect } from "next/navigation";
 import { ID, Query } from "node-appwrite";
+import { computeNextRun } from "./computeNextRun";
 
 const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
 
@@ -26,19 +27,26 @@ export async function signOut() {
  * @param jobid
  * @returns Job logs
  */
-export async function UserJobLogs(jobId) {
+export async function UserJobLogs(jobId, page = 1, limit = 10) {
   const { tablesDB } = await createSessionClient();
+
+  const offset = (page - 1) * limit;
 
   try {
     const res = await tablesDB.listRows({
       databaseId: dbID,
       tableId: logsCollection,
-      queries: [Query.equal("jobId", jobId), Query.limit(200)],
+      queries: [
+        Query.equal("jobId", jobId),
+        Query.orderDesc("$createdAt"),
+        Query.limit(limit),
+        Query.offset(offset),
+      ],
     });
 
     // console.log(res);
 
-    return res.rows; // return only rows
+    return { logs: res.rows, total: res.total, page, limit };
   } catch (error) {
     console.error(error);
     return []; // safe fallback
@@ -63,6 +71,26 @@ export async function getUserJobs() {
     return res;
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function getActiveJobs() {
+  const { account, tablesDB } = await createSessionClient();
+
+  try {
+    const ownerId = (await account.get()).$id;
+    const res = await tablesDB.listRows({
+      databaseId: dbID,
+      tableId: jobsCollections,
+      queries: [
+        Query.equal("status", "active"),
+        Query.equal("ownerId", ownerId),
+      ],
+    });
+    // console.log(res);
+    return res;
+  } catch (error) {
+    return error;
   }
 }
 
@@ -108,26 +136,39 @@ export async function getJob(jobId) {
     // console.log(result);
     return result;
   } catch (error) {
-    console.error(error);
+    return error;
   }
 }
 
 export async function updateJob(
   jobId,
   url,
+  name,
   method,
   body = null,
   status,
-  cronExp
+  cronExp,
+  timeZone
 ) {
   const { tablesDB } = await createSessionClient();
 
+  const now = new Date();
+
   try {
+    const nextRun = computeNextRun({
+      cronExp,
+      timeZone,
+      fromDate: now,
+    });
+
     const data = {
       url,
+      name,
       method,
       status,
       cronExp,
+      timeZone,
+      nextRun,
     };
 
     if (body !== null || body !== undefined) {
@@ -141,7 +182,7 @@ export async function updateJob(
       data,
     });
 
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (error) {
     return error;

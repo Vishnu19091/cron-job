@@ -56,7 +56,7 @@ export default function SideBar() {
 
       <div
         className={`relative h-screen flex ${
-          !isSideBarOpen ? "w-[72px]" : "w-[15%]"
+          !isSideBarOpen ? "lg:w-[72px] sm:w-0" : "lg:w-[15%] sm:w-0"
         }`}
       >
         <div

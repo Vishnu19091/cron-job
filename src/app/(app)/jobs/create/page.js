@@ -19,6 +19,7 @@ export default function Page() {
     jobName,
     jobURL,
     jobMethod,
+    jobBody,
     scheduleType,
     intervalMinutes,
     dailyHour,
@@ -56,7 +57,7 @@ export default function Page() {
 
       case "YEARLY":
         cron = `${dailyMinute} ${dailyHour} ${monthlyDay} ${yearlyMonth} *`;
-        console.log(cron);
+        // console.log(cron);
         text = `Runs every year on day ${monthlyDay} of month ${yearlyMonth} at ${dailyHour}:${dailyMinute}`;
         break;
 
@@ -105,10 +106,13 @@ export default function Page() {
       const nextRun = new Date();
       nextRun.setMinutes(nextRun.getMinutes() + 1);
       // console.log(nextRun);
+
+      const shouldSendBody = jobMethod === "POST" || jobMethod === "PUT";
       const res = await createCronJob(
         jobName,
         jobURL,
         jobMethod,
+        shouldSendBody ? jobBody : null,
         cronExpression,
         nextRun
       );

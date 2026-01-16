@@ -12,7 +12,7 @@ const initialState = {
   jobName: "",
   jobURL: "",
   jobMethod: "GET",
-  jobBody: "",
+  jobBody: null,
   scheduleType: "EVERY_MINUTES",
   intervalMinutes: 1,
   dailyHour: "00",

@@ -1,15 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./LogsTable.module.css";
 import CopyButton from "@/app/_components/CopyButton";
+import LogControls from "./logControls";
 
-export default function LogsTable({ logs }) {
+export default function LogsTable({
+  logs: data,
+  page,
+  total,
+  limit,
+  jobId,
+  jobName,
+}) {
   const [sortBy, setSortBy] = useState("timestamp");
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
-  console.log(logs);
+  const [logs, setLogs] = useState([]);
+
+  useEffect(() => {
+    setLogs(data);
+    // console.log(data);
+  }, [logs, setLogs]);
+
+  const totalPages = Math.ceil(total / limit);
+  // console.log(logs);
+
   // Sorting
   const sortedLogs = [...logs].sort((a, b) => {
     if (sortBy === "timestamp")
@@ -28,34 +45,23 @@ export default function LogsTable({ logs }) {
 
   return (
     <div className={styles.wrapper}>
-      {/* Top Controls */}
-      <div className={styles.controls}>
-        <select
-          className={styles.select}
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-        >
-          <option value="timestamp">Sort by Timestamp</option>
-          <option value="responseTime">Sort by Response Time</option>
-          <option value="statusCode">Sort by Status Code</option>
-        </select>
-
-        <select
-          className={styles.select}
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        >
-          <option value="all">All Logs</option>
-          <option value="success">Success Only</option>
-          <option value="failed">Failed Only</option>
-        </select>
-      </div>
+      <LogControls
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        filter={filter}
+        setFilter={setFilter}
+        jobId={jobId}
+        setLogs={setLogs}
+        jobName={jobName}
+        limit={limit}
+      />
 
       {/* Main Table */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead className={styles.thead}>
             <tr>
+              <th className={styles.th}>S.No</th>
               <th className={styles.th}>Timestamp</th>
               <th className={styles.th}>Status</th>
               <th className={styles.th}>Time</th>
@@ -67,7 +73,7 @@ export default function LogsTable({ logs }) {
           {/* Table Body */}
           {logs.length > 0 && (
             <tbody className={styles.tbody}>
-              {filteredLogs.map((log) => (
+              {filteredLogs.map((log, idx) => (
                 <>
                   <tr
                     key={log.$id}
@@ -76,6 +82,7 @@ export default function LogsTable({ logs }) {
                       setExpanded(expanded === log.$id ? null : log.$id)
                     }
                   >
+                    <td className={styles.td}>{idx + 1}</td>
                     <td className={styles.td}>
                       {new Date(log.$createdAt).toLocaleString()}
                     </td>
@@ -100,7 +107,7 @@ export default function LogsTable({ logs }) {
                   {/* Expandable Section */}
                   {expanded === log.$id && (
                     <tr className={styles.expandedRow}>
-                      <td colSpan="5" className={styles.expandedCol}>
+                      <td colSpan="6" className={styles.expandedCol}>
                         <div className={styles.responseBox}>
                           <strong>Response Body:</strong>
                           <pre className={styles.pre}>
@@ -121,14 +128,54 @@ export default function LogsTable({ logs }) {
           {logs.length === 0 && (
             <tbody className={styles.noLogsBody}>
               <tr>
-                <td colSpan={5} className={styles.noLogsCell}>
+                <td colSpan={6} className={styles.noLogsCell}>
                   No jobs executed
+                </td>
+              </tr>
+            </tbody>
+          )}
+
+          {/* No Failed Logs */}
+          {filteredLogs.length === 0 && filter === "failed" && (
+            <tbody className={styles.noLogsBody}>
+              <tr>
+                <td colSpan={6} className={styles.noLogsCell}>
+                  No Failed logs
                 </td>
               </tr>
             </tbody>
           )}
         </table>
       </div>
+
+      {/* PAGINATION */}
+      {totalPages > 1 && (
+        <div className={styles.pagination}>
+          <a
+            className={styles.pagination_nav_link}
+            href={`/jobs/${jobId}/logs?page=${
+              page - 1
+            }&limit=${limit}&name=${jobName}`}
+            aria-disabled={page === 1}
+          >
+            Prev
+          </a>
+
+          <span>
+            Page {page} of {totalPages}
+          </span>
+
+          <a
+            className={styles.pagination_nav_link}
+            href={`/jobs/${jobId}/logs?page=${
+              page + 1
+            }&limit=${limit}&name=${jobName}`}
+            aria-disabled={page === totalPages}
+          >
+            Next
+          </a>
+        </div>
+      )}
     </div>
   );
 }

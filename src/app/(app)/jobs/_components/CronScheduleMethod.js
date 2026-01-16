@@ -2,11 +2,14 @@ import { useCreateJob } from "@/app/_contexts/JobCreateContext";
 
 function CronScheduleMethod() {
   const { jobMethod, jobBody, dispatch } = useCreateJob();
+
+  // console.log(jobMethod);
   return (
     <>
       <label>Method</label>
       <select
         name="method"
+        value={jobMethod}
         onChange={(e) =>
           dispatch({ type: "SET_JOB_METHOD", payload: e.target.value })
         }
