@@ -19,11 +19,8 @@ export async function request(url, method, body = null) {
   };
 
   if (body && method !== "GET") {
-    if (typeof body === "object") {
-      options.body = JSON.stringify(body);
-      options.headers["Content-Type"] = "application/json";
-    } else if (typeof body === "string") {
-      options.body = body; // assume already stringified
+    if (typeof body === "string") {
+      options.body = body; // only string is sent here, because receiving the input as a string in the form
       options.headers["Content-Type"] = "application/json";
     }
   }

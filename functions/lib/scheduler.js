@@ -1,5 +1,12 @@
+import { Query } from "node-appwrite";
+import { getDatabases } from "./appwrite.js";
 import { computeNextRun } from "./computeNextRun.js";
-import { getDueJobs, InsertUserJobLog, updateJobMetaData } from "./db.js";
+import {
+  GetAllJobs,
+  getDueJobs,
+  InsertUserJobLog,
+  updateJobMetaData,
+} from "./db.js";
 import { request } from "./request.js";
 
 export async function runScheduler() {
@@ -57,4 +64,64 @@ export async function runScheduler() {
       });
     }
   }
+}
+
+/**
+ * This function handles removing the excess data
+ * of a Job Logs, that is a **SINGLE JOB** can have only a **limit of 200 records**,
+ * when a job logs reaches that limit, this function will remove the old records
+ * from the database.
+ */
+export async function RemoveOldLogRecords() {
+  const db = getDatabases();
+  const databaseId = process.env.DATABASE_ID;
+  const logsCollectionId = process.env.LOGS_COLLECTION_ID;
+
+  if (!databaseId || !logsCollectionId) {
+    throw new Error(
+      `ENV MISSING → DATABASE_ID=${databaseId}, LOGS_COLLECTION_ID=${jobsCollectionId}`,
+    );
+  }
+
+  const MAX_LIMIT = 250;
+
+  const { documents: jobs } = await GetAllJobs();
+
+  let arr = [];
+  for (let job = 0; job < jobs.length; job++) {
+    if (jobs[job].$id) arr.push(jobs[job].$id);
+  }
+
+  for (const jobId of arr) {
+    const { total: count } = await db.listDocuments(
+      databaseId,
+      logsCollectionId,
+      [Query.equal("jobId", `${jobId}`), Query.limit(1)],
+    );
+
+    if (count <= MAX_LIMIT) continue;
+    const excess = count - MAX_LIMIT;
+
+    while (excess > 0) {
+      const limit = Math.min(excess, 100);
+
+      const res = await db.listDocuments(databaseId, logsCollectionId, [
+        Query.equal("jobId", jobId),
+        Query.orderAsc("$createdAt"),
+        Query.limit(limit),
+      ]);
+
+      if (res.documents.length === 0) break;
+
+      await Promise.all(
+        res.documents.map((doc) =>
+          db.deleteDocument(databaseId, logsCollectionId, doc.$id),
+        ),
+      );
+
+      excess -= res.documents.length;
+    }
+  }
+
+  return { message: "Old job logs cleaned successfully" };
 }

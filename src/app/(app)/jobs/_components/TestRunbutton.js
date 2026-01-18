@@ -11,9 +11,18 @@ function TestRunbutton() {
   const [isLoading, setIsLoading] = useState(false);
   const [testData, setTestData] = useState({});
 
-  async function Testrun() {
-    if (!jobName || !jobMethod || !jobURL) {
+  async function Testrun(e) {
+    e.preventDefault();
+
+    if (!jobName && !jobURL) {
       toast.error("All Fields are required!");
+      return;
+    } else if (
+      (jobMethod === "POST" || jobMethod === "PUT") &&
+      jobBody === null
+    ) {
+      toast.error("Job Body is required!");
+      return;
     }
 
     if (!jobURL.startsWith("https://") && !jobURL.startsWith("http://")) {
@@ -29,7 +38,7 @@ function TestRunbutton() {
         body: JSON.stringify({
           url: jobURL,
           method: jobMethod,
-          body: jobBody
+          body: jobBody,
         }),
       });
 

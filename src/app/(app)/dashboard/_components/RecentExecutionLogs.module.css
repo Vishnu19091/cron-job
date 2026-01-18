@@ -1,0 +1,41 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-size: large;
+  color: #9ca3af;
+  padding: 8px;
+}
+
+.table tr {
+  border-bottom: 1px solid #313131;
+  transition: background-color 250ms ease-in-out;
+}
+
+.table tr:hover {
+  background-color: #313131;
+  border-radius: 4px;
+}
+
+.link {
+  font-weight: bolder;
+  color: #006eff;
+  transition: text-decoration 250ms ease-in-out;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.success {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.failed {
+  color: #ef4444;
+  font-weight: 600;
+}

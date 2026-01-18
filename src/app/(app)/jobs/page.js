@@ -16,10 +16,11 @@ export default function Page() {
         <table className={styles.table}>
           <thead className={styles.thead}>
             <tr>
+              <th>S.No</th>
               <th>Job Title, URL</th>
               <th>Last Run</th>
               <th>Next Run</th>
-              <th>Schedule Frequency</th>
+              <th>CronTab Expression</th>
               <th>Status</th>
               <th>Method</th>
               <th>Preference</th>
@@ -30,7 +31,7 @@ export default function Page() {
             fallback={
               <tbody>
                 <tr>
-                  <td colSpan={7}>
+                  <td colSpan={8}>
                     <Spinner message="Loading Jobs..." />
                   </td>
                 </tr>

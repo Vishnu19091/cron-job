@@ -3,12 +3,12 @@ import ParseJSON from "@/app/_lib/server/parseJSON";
 export async function POST(request) {
   let { url, method, body } = await request.json();
 
-  if (typeof body === "string") {
+  // console.log(typeof body);
+
+  if ((method === "POST" || method === "PUT") && typeof body === "string") {
     body = ParseJSON(body);
-  } else if (typeof body === "object") {
-    body = JSON.stringify(body);
+    // console.log("Body After parsed from string", body);
   }
-  // console.log(body);
 
   const start = performance.now();
 

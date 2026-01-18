@@ -28,9 +28,10 @@ function CronScheduleMethod() {
           name="body"
           placeholder={"Request body goes here"}
           value={jobBody}
-          onChange={(e) =>
-            dispatch({ type: "SET_JOB_BODY", payload: e.target.value })
-          }
+          onChange={(e) => {
+            let value = e.target.value;
+            dispatch({ type: "SET_JOB_BODY", payload: value });
+          }}
         ></textarea>
       ) : null}
     </>

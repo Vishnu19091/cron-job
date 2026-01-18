@@ -2,6 +2,21 @@ import { Query } from "node-appwrite";
 import { getDatabases } from "./appwrite.js";
 import { serializeResponseBody } from "./serializeResponse.js";
 
+export async function GetAllJobs() {
+  const databaseId = process.env.DATABASE_ID;
+  const jobsCollectionId = process.env.JOBS_COLLECTION_ID;
+
+  if (!databaseId || !jobsCollectionId) {
+    throw new Error(
+      `ENV MISSING → DATABASE_ID=${databaseId}, JOBS_COLLECTION_ID=${jobsCollectionId}`,
+    );
+  }
+
+  const db = getDatabases();
+
+  return await db.listDocuments(databaseId, jobsCollectionId);
+}
+
 /**
  * Fetches all DueJobs from DB
  * @returns
@@ -12,7 +27,7 @@ export async function getDueJobs(nowISO) {
 
   if (!databaseId || !jobsCollectionId) {
     throw new Error(
-      `ENV MISSING → DATABASE_ID=${databaseId}, JOBS_COLLECTION_ID=${jobsCollectionId}`
+      `ENV MISSING → DATABASE_ID=${databaseId}, JOBS_COLLECTION_ID=${jobsCollectionId}`,
     );
   }
   const db = getDatabases();
@@ -49,7 +64,7 @@ export async function InsertUserJobLog({
     typeof statusCode !== "number"
   ) {
     throw new Error(
-      `INVALID LOG INPUT → jobId=${jobId}, responseTime=${responseTime}, statusCode=${statusCode}`
+      `INVALID LOG INPUT → jobId=${jobId}, responseTime=${responseTime}, statusCode=${statusCode}`,
     );
   }
 

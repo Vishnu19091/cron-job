@@ -1,14 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import styles from "./page.module.css";
-import { createCronJob } from "@/app/_lib/server/server-data-service";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { createCronJob } from "@/app/_lib/server/server-data-service";
+import ParseJSON from "@/app/_lib/server/parseJSON";
+import styles from "./page.module.css";
+import { useCreateJob } from "@/app/_contexts/JobCreateContext";
 import CrontabExpression from "../_components/CrontabExpression";
 import CronScheduleType from "../_components/CronScheduleType";
 import TestRunbutton from "../_components/TestRunbutton";
 import CronScheduleMethod from "../_components/CronScheduleMethod";
-import { useCreateJob } from "@/app/_contexts/JobCreateContext";
-import { toast } from "react-toastify";
 import { onCronInputChange } from "../_components/cronController";
 
 export default function Page() {
@@ -90,8 +91,20 @@ export default function Page() {
   async function onCreateJob(e) {
     e.preventDefault();
 
-    if (!jobName || !jobMethod || !jobURL) {
+    if (!jobName && !jobURL) {
       toast.error("All Fields are required!");
+      return;
+    } else if (
+      (jobMethod === "POST" || jobMethod === "PUT") &&
+      jobBody === null
+    ) {
+      toast.error("Job Body is required!");
+      return;
+    }
+
+    if (!jobURL.startsWith("https://") && !jobURL.startsWith("http://")) {
+      toast.error(`Invalid URL -> "${jobURL}"`);
+      return;
     }
 
     if (!jobURL.startsWith("https://") && !jobURL.startsWith("http://")) {
@@ -103,18 +116,13 @@ export default function Page() {
     try {
       setIsLoading(true);
 
-      const nextRun = new Date();
-      nextRun.setMinutes(nextRun.getMinutes() + 1);
-      // console.log(nextRun);
-
       const shouldSendBody = jobMethod === "POST" || jobMethod === "PUT";
       const res = await createCronJob(
         jobName,
         jobURL,
         jobMethod,
-        shouldSendBody ? jobBody : null,
-        cronExpression,
-        nextRun
+        shouldSendBody ? ParseJSON(jobBody) : null,
+        cronExpression
       );
       const id = res.$id;
       // console.log(id);
@@ -133,6 +141,7 @@ export default function Page() {
         autoClose: 5000,
       });
       console.error("Unable to create new Job", error);
+      return;
     } finally {
       setIsLoading(false);
     }

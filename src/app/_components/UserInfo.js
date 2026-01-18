@@ -1,4 +1,6 @@
 "use client";
+import { CircleCheck, Clock } from "lucide-react";
+import BoxCard from "../(app)/dashboard/_components/BoxCard";
 import { useAuth } from "../_contexts/AuthContext";
 
 export default function UserInfo() {
@@ -16,16 +18,21 @@ export default function UserInfo() {
   return (
     <div>
       <h1>Welcome, {userName}!</h1>
-      <p>
-        ID <span className=" bg-[#191919] p-2 rounded">{userId}</span>
-      </p>
-      <p>Email: {userEmail}</p>
-      <p className={`${userVerified} ? text-green-400 : text-red-400`}>
-        User {userVerified ? "Verified!" : "not verified"}
-      </p>
+      <section className="flex flex-row gap-4">
+        <p>Email: {userEmail}</p>
+        <p className={`${userVerified ? "text-green-400" : "text-red-400"}`}>
+          User {userVerified ? "Verified!" : "not verified"}
+        </p>
+      </section>
 
-      <p>Total Cron Jobs - {totalJobs}</p>
-      <p>Total Active Cron Jobs - {totalActiveJobs}</p>
+      <div className="flex flex-row gap-5">
+        <BoxCard icon={<Clock />} title="Total Jobs" data={totalJobs} />
+        <BoxCard
+          icon={<CircleCheck />}
+          title="Active Jobs"
+          data={totalActiveJobs}
+        />
+      </div>
     </div>
   );
 }

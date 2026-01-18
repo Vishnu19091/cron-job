@@ -94,7 +94,7 @@ export async function getActiveJobs() {
   }
 }
 
-export async function createCronJob(name, url, method, cronExp, nextRun) {
+export async function createCronJob(name, url, method, body, cronExp) {
   const { account, tablesDB } = await createSessionClient();
 
   try {
@@ -102,19 +102,25 @@ export async function createCronJob(name, url, method, cronExp, nextRun) {
 
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+    const nextRun = new Date();
+    nextRun.setMinutes(nextRun.getMinutes() + 1);
+
+    const data = {
+      name,
+      url,
+      method,
+      cronExp,
+      ownerId,
+      nextRun,
+      timeZone: userTimeZone,
+      body,
+    };
+
     const result = await tablesDB.createRow({
       databaseId: dbID,
       tableId: jobsCollections,
       rowId: ID.unique(),
-      data: {
-        name,
-        url,
-        method,
-        cronExp,
-        ownerId,
-        nextRun,
-        timeZone: userTimeZone,
-      },
+      data,
     });
 
     return result;
@@ -148,7 +154,7 @@ export async function updateJob(
   body = null,
   status,
   cronExp,
-  timeZone
+  timeZone,
 ) {
   const { tablesDB } = await createSessionClient();
 
