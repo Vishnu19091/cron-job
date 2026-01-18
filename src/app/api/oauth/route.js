@@ -31,6 +31,7 @@ export async function GET(request) {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
+      expires: new Date(session.expire),
       secure: true,
     });
 
