@@ -76,7 +76,7 @@ export default function LogsTable({
               {filteredLogs.map((log, idx) => (
                 <>
                   <tr
-                    key={log.$id}
+                    key={idx}
                     className={styles.row}
                     onClick={() =>
                       setExpanded(expanded === log.$id ? null : log.$id)

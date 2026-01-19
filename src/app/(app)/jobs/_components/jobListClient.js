@@ -29,69 +29,81 @@ function JobListClient({ jobs: initialJobs }) {
   return (
     <>
       <tbody>
-        {jobs.map((rows, idx) => (
-          <tr key={rows.$id}>
-            <td>{idx + 1}.</td>
-            <td className={styles.titleCell}>
-              <span className={styles.jobName}>{rows.name}</span>
-              <span className={styles.jobUrl}>{rows.url}</span>
-            </td>
+        {jobs.length ? (
+          <>
+            {jobs.map((rows, idx) => (
+              <tr key={rows.$id}>
+                <td>{idx + 1}.</td>
+                <td className={styles.titleCell}>
+                  <span className={styles.jobName}>{rows.name}</span>
+                  <span className={styles.jobUrl}>{rows.url}</span>
+                </td>
 
-            <td>
-              {rows.lastRun
-                ? new Date(rows.lastRun).toLocaleString()
-                : "No Executions made!"}
-            </td>
-            <td>{new Date(rows.nextRun).toLocaleString()}</td>
-            <td title="change the expression in to words">{rows.cronExp}</td>
+                <td>
+                  {rows.lastRun
+                    ? new Date(rows.lastRun).toLocaleString()
+                    : "No Executions made!"}
+                </td>
+                <td>{new Date(rows.nextRun).toLocaleString()}</td>
+                <td title="change the expression in to words">
+                  {rows.cronExp}
+                </td>
 
-            <td>
-              <span
-                className={`${styles.status} ${
-                  rows.status === "active"
-                    ? styles.active
-                    : rows.status === "paused"
-                    ? styles.paused
-                    : rows.status === "failed"
-                    ? styles.failed
-                    : styles.disabled
-                }`}
-              >
-                {rows.status}
-              </span>
-            </td>
+                <td>
+                  <span
+                    className={`${styles.status} ${
+                      rows.status === "active"
+                        ? styles.active
+                        : rows.status === "paused"
+                          ? styles.paused
+                          : rows.status === "failed"
+                            ? styles.failed
+                            : styles.disabled
+                    }`}
+                  >
+                    {rows.status}
+                  </span>
+                </td>
 
-            <td>
-              <span className={styles.method}>{rows.method}</span>
-            </td>
+                <td>
+                  <span className={styles.method}>{rows.method}</span>
+                </td>
 
-            <td>
-              <div className={styles.actions}>
-                <Link
-                  href={`/jobs/${rows.$id}/edit`}
-                  className={styles.editLink}
-                >
-                  Edit Job
-                </Link>
-                <Link
-                  href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
-                  className={styles.editLink}
-                >
-                  View Logs
-                </Link>
-                <button
-                  onClick={() => {
-                    setSelectedJob(rows);
-                    setIsModalOpen(true);
-                  }}
-                  className={styles.deleteBtn}
-                >
-                  Delete
-                </button>
-              </div>
+                <td>
+                  <div className={styles.actions}>
+                    <Link
+                      href={`/jobs/${rows.$id}/edit`}
+                      className={styles.editLink}
+                    >
+                      Edit Job
+                    </Link>
+                    <Link
+                      href={`/jobs/${rows.$id}/logs?name=${rows.name}`}
+                      className={styles.editLink}
+                    >
+                      View Logs
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setSelectedJob(rows);
+                        setIsModalOpen(true);
+                      }}
+                      className={styles.deleteBtn}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </>
+        ) : (
+          <tr>
+            <td colSpan={8} className={styles.not_found}>
+              No Jobs found!
             </td>
           </tr>
-        ))}
+        )}
       </tbody>
       <ModalWindow isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
         <p>
