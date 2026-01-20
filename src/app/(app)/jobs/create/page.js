@@ -117,12 +117,15 @@ export default function Page() {
       setIsLoading(true);
 
       const shouldSendBody = jobMethod === "POST" || jobMethod === "PUT";
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
       const res = await createCronJob(
         jobName,
         jobURL,
         jobMethod,
         shouldSendBody ? ParseJSON(jobBody) : null,
         cronExpression,
+        timeZone,
       );
       const id = res.$id;
       // console.log(id);

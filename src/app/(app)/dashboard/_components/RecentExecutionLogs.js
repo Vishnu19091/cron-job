@@ -14,19 +14,23 @@ async function RecentExecutionLogs() {
   const { account, tablesDB } = await createSessionClient();
   const now = new Date();
 
-  const oneHourAgo = new Date(now);
+  const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
   oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
   let recentLogsData;
 
-  // oneHourAgo.toISOString();
   // console.log(
   //   "Now->",
   //   now.toISOString(),
   //   "\nOne Hour Ago ->",
   //   oneHourAgo.toISOString(),
   // );
+
+  console.log({
+    now: new Date().toISOString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  });
 
   try {
     const ownerId = (await account.get()).$id;
@@ -58,6 +62,8 @@ async function RecentExecutionLogs() {
           <tr>
             <th>S.No</th>
             <th>URL</th>
+            <th>Cron-Tab</th>
+            <th>Method</th>
             <th>Status</th>
             <th>LastRun</th>
             <th></th>
@@ -71,6 +77,8 @@ async function RecentExecutionLogs() {
                 <td className="font-bold" title={`Job Name - ${d.name}`}>
                   {d.url}
                 </td>
+                <td>{d.cronExp}</td>
+                <td>{d.method}</td>
                 <td
                   className={`${d.status === "active" ? styles.success : styles.failed}`}
                 >
