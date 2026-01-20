@@ -1,0 +1,20 @@
+.google_btn {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1.125rem;
+  border: 1px solid white;
+  padding-inline: 2.5rem;
+  padding-block: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .google_btn {
+    gap: 1rem;
+    font-size: 0.5rem;
+    padding-inline: 1.5rem;
+    padding-block: 0.5rem;
+  }
+}

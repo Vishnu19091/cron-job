@@ -5,11 +5,7 @@ import { createSessionClient } from "./appwrite.server";
 import { redirect } from "next/navigation";
 import { ID, Query } from "node-appwrite";
 import { computeNextRun } from "./computeNextRun";
-
-const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
-
-const jobsCollections = "jobs-collections";
-const logsCollection = "logs-collection";
+import { dbID, jobsCollections, logsCollection } from "./env";
 
 export async function signOut() {
   const { account } = await createSessionClient();

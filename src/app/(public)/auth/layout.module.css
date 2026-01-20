@@ -5,6 +5,12 @@
   transform: translate(-50%, -30%);
   font-size: 3rem;
 }
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+    top: 3%;
+  }
+}
 
 .auth_bg {
   min-height: 100vh;

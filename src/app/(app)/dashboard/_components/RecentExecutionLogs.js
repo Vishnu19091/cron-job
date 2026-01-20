@@ -1,60 +1,62 @@
-import { getUserJobs } from "@/app/_lib/server/server-data-service";
 import styles from "./RecentExecutionLogs.module.css";
-const sampleData = [
-  {
-    url: "https://antiphish.com",
-    timestamp: "2026-01-17T04:08:07.461Z",
-    href: "/link",
-    status: "success",
-  },
-  {
-    url: "https://antiphh.com",
-    timestamp: "2026-01-17T04:08:55.774Z",
-    href: "/link",
-    status: "failed",
-  },
-  {
-    url: "https://antiphishy.com",
-    timestamp: "2026-01-17T04:08:07.361Z",
-    href: "/link",
-    status: "success",
-  },
-  {
-    url: "https://antiphs.com",
-    timestamp: "2026-01-17T04:08:55.874Z",
-    href: "/link",
-    status: "failed",
-  },
-];
+import { createSessionClient } from "@/app/_lib/server/appwrite.server";
+import { Query } from "node-appwrite";
 
 function FormatDateTime(ts) {
   return new Date(ts).toLocaleString();
 }
 
-// function filterLastHour(data, key = "timestamp") {
-//   const ONE_HOUR = 60 * 60 * 1000;
-
-//   const now = Date.now();
-
-//   return data.filter((item) => {
-//     const time = new Date(item[key]).getTime();
-
-//     return now - time <= ONE_HOUR;
-//   });
-// }
-
 async function RecentExecutionLogs() {
-  const userJobs = await getUserJobs();
+  const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
+
+  const jobsCollections = "jobs-collections";
+
+  const { account, tablesDB } = await createSessionClient();
+  const now = new Date();
+
+  const oneHourAgo = new Date(now);
+
+  oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+
+  let recentLogsData;
+
+  // oneHourAgo.toISOString();
+  // console.log(
+  //   "Now->",
+  //   now.toISOString(),
+  //   "\nOne Hour Ago ->",
+  //   oneHourAgo.toISOString(),
+  // );
+
+  try {
+    const ownerId = (await account.get()).$id;
+    const result = await tablesDB.listRows({
+      databaseId: dbID,
+      tableId: jobsCollections,
+      queries: [
+        Query.equal("ownerId", ownerId),
+        Query.between("lastRun", oneHourAgo.toISOString(), now.toISOString()),
+      ],
+    });
+
+    recentLogsData = result.rows;
+  } catch (error) {
+    throw new Error(error);
+  }
+  // const userJobs = await getUserJobs();
 
   // const lastHour = filterLastHour(userJobs.rows, "timeStamp");
-  // console.log(lastHour);
+  // console.log(recentLogsData);
   return (
     <div className="border border-white rounded-2xl p-3">
-      <h3 className="text-2xl">Recent Execution</h3>
+      <h3 className="text-2xl">
+        Recent Execution <span>Last 1 hour</span>
+      </h3>
       <hr />
       <table className={styles.table}>
         <thead>
           <tr>
+            <th>S.No</th>
             <th>URL</th>
             <th>Status</th>
             <th>LastRun</th>
@@ -62,24 +64,38 @@ async function RecentExecutionLogs() {
           </tr>
         </thead>
         <tbody>
-          {sampleData.map((d) => (
-            <tr key={d.timestamp}>
-              <td className="font-bold">{d.url}</td>
-              <td
-                className={`${d.status === "success" ? styles.success : styles.failed}`}
-              >
-                {d.status}
-              </td>
+          {recentLogsData.length ? (
+            recentLogsData.map((d, idx) => (
+              <tr key={d.$id}>
+                <td>{idx + 1}</td>
+                <td className="font-bold" title={`Job Name - ${d.name}`}>
+                  {d.url}
+                </td>
+                <td
+                  className={`${d.status === "active" ? styles.success : styles.failed}`}
+                >
+                  {d.status}
+                </td>
 
-              <td>{FormatDateTime(d.timestamp)}</td>
+                <td>{FormatDateTime(d.lastRun)}</td>
 
-              <td>
-                <a href={d.href} className={styles.link}>
-                  View logs →
-                </a>
+                <td>
+                  <a
+                    href={`/jobs/${d.$id}/logs?name=${d.name}`}
+                    className={styles.link}
+                  >
+                    View logs →
+                  </a>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={5} className="text-center text-2xl">
+                No Recent Executions
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

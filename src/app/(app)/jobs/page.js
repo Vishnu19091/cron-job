@@ -4,6 +4,10 @@ import styles from "./_styles/jobs.module.css";
 import CreateNewCronJobBTN from "@/app/_components/CreateJobBTN";
 import { Suspense } from "react";
 
+export const metadata = {
+  title: "Jobs",
+};
+
 export default function Page() {
   return (
     <div className={styles.layer}>

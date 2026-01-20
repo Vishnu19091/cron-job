@@ -42,7 +42,7 @@ export default function Page() {
           },
           credentials: "include",
           body: JSON.stringify({ email: email, password: passwd }),
-        }
+        },
       );
 
       const data = await response.json();

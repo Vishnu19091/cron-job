@@ -3,23 +3,25 @@ import ParseJSON from "@/app/_lib/server/parseJSON";
 export async function POST(request) {
   let { url, method, body } = await request.json();
 
+  const start = performance.now();
+
+  const options = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
   // console.log(typeof body);
 
   if ((method === "POST" || method === "PUT") && typeof body === "string") {
     body = ParseJSON(body);
+    options.body = body;
     // console.log("Body After parsed from string", body);
   }
 
-  const start = performance.now();
-
   try {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    });
+    const response = await fetch(url, options);
 
     const end = performance.now();
     const contentType = response.headers.get("Content-Type");
@@ -52,7 +54,7 @@ export async function POST(request) {
         error: err.message,
         durationMs: Math.round(end - start),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

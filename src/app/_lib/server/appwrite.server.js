@@ -63,7 +63,7 @@ export async function getLoggedInUser() {
   const identities = await account?.listIdentities();
 
   const googleIdentity = identities.identities.find(
-    (i) => i.provider === "google"
+    (i) => i.provider === "google",
   );
 
   let avatar = null;
@@ -96,7 +96,7 @@ async function getGoogleProfilePhoto(providerAccessToken) {
       headers: {
         Authorization: `Bearer ${providerAccessToken}`,
       },
-    }
+    },
   );
 
   if (!res.ok) {

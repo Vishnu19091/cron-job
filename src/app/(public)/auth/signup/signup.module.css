@@ -70,3 +70,9 @@
 .primaryBtn:hover {
   background: #766b9f;
 }
+
+@media (max-width: 768px) {
+  .card {
+    max-width: 300px;
+  }
+}

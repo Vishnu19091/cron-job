@@ -122,7 +122,7 @@ export default function Page() {
         jobURL,
         jobMethod,
         shouldSendBody ? ParseJSON(jobBody) : null,
-        cronExpression
+        cronExpression,
       );
       const id = res.$id;
       // console.log(id);

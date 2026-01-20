@@ -50,7 +50,7 @@ export default function Page() {
             email: email,
             password: passwd,
           }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -92,7 +92,9 @@ export default function Page() {
     <div className={styles.card}>
       <div className={styles.title}>Sign Up</div>
 
-      <p className={styles.subtitle}>Please enter your details to sign up</p>
+      <p className={styles.subtitle}>
+        Please fill up the below given fields to sign up
+      </p>
 
       <form className={styles.form} onSubmit={onFormSubmit}>
         <input
