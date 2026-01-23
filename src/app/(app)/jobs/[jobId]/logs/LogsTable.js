@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./LogsTable.module.css";
+import "../../_styles/jobs.css";
 import CopyButton from "@/app/_components/CopyButton";
 import LogControls from "./logControls";
 

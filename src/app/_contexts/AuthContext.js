@@ -36,7 +36,7 @@ const initialState = {
   mode: "dark",
   isSideBarOpen:
     typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("sidebar-open")) ?? true
+      ? (JSON.parse(localStorage.getItem("sidebar-open")) ?? true)
       : true,
   totalJobs: null,
   totalActiveJobs: null,
@@ -111,7 +111,7 @@ function AuthProvider({ children }) {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/user`,
           {
             credentials: "include",
-          }
+          },
         );
 
         if (!res.ok) throw new Error("Unauthorized!");

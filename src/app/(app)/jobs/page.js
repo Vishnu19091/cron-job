@@ -1,6 +1,7 @@
 import Spinner from "@/app/_components/Spinner";
 import JobList from "./_components/jobList";
 import styles from "./_styles/jobs.module.css";
+import "./_styles/jobs.css";
 import CreateNewCronJobBTN from "@/app/_components/CreateJobBTN";
 import { Suspense } from "react";
 

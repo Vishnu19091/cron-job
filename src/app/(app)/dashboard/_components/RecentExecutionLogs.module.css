@@ -6,7 +6,7 @@
 .table th {
   text-align: left;
   font-size: large;
-  color: #9ca3af;
+  color: var(--rc_tb_th);
   padding: 8px;
 }
 
@@ -16,13 +16,13 @@
 }
 
 .table tr:hover {
-  background-color: #313131;
+  background-color: var(--border_SideBar);
   border-radius: 4px;
 }
 
 .link {
   font-weight: bolder;
-  color: #006eff;
+  color: var(--link);
   transition: text-decoration 250ms ease-in-out;
 }
 
@@ -31,11 +31,22 @@
 }
 
 .success {
-  color: #22c55e;
+  color: var(--success);
   font-weight: 600;
 }
 
 .failed {
-  color: #ef4444;
+  color: var(--failed);
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .table {
+    display: block;
+    overflow-x: scroll;
+  }
+
+  .table td {
+    padding: 10px;
+  }
 }

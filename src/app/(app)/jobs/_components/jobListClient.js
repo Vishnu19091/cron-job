@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import styles from "../_styles/jobs.module.css";
+import "../_styles/jobs.css";
 
 import { deleteCronJob } from "@/app/_lib/server/server-data-service";
 import ModalWindow from "./ModalWindow";

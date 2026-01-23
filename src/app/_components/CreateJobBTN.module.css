@@ -4,14 +4,14 @@
   gap: 10px;
   width: fit-content;
 
-  border: 1px solid white;
+  border: 1px solid var(--border);
   padding: 10px;
   border-radius: 0.5rem;
-  color: white;
+  color: var(--text);
   transition: all 300ms ease-in-out;
 }
 
 .link_btn:hover {
-  background-color: white;
-  color: #0f0f0f;
+  background-color: var(--foreground);
+  color: var(--background);
 }

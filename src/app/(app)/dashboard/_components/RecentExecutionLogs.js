@@ -6,7 +6,7 @@ function FormatDateTime(ts) {
   return new Date(ts).toLocaleString();
 }
 
-async function RecentExecutionLogs() {
+async function RecentExecutionLogs({ userTimeZone }) {
   const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
 
   const jobsCollections = "jobs-collections";
@@ -15,8 +15,6 @@ async function RecentExecutionLogs() {
   const now = new Date();
 
   const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-
-  oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
   let recentLogsData;
 
@@ -30,6 +28,7 @@ async function RecentExecutionLogs() {
   console.log({
     now: new Date().toISOString(),
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    userTimeZone,
   });
 
   try {
@@ -52,7 +51,7 @@ async function RecentExecutionLogs() {
   // const lastHour = filterLastHour(userJobs.rows, "timeStamp");
   // console.log(recentLogsData);
   return (
-    <div className="border border-white rounded-2xl p-3">
+    <div className="border border-(--border) rounded-2xl p-3 w-[inherit]">
       <h3 className="text-2xl">
         Recent Execution <span>Last 1 hour</span>
       </h3>
@@ -77,8 +76,11 @@ async function RecentExecutionLogs() {
                 <td className="font-bold" title={`Job Name - ${d.name}`}>
                   {d.url}
                 </td>
+
                 <td>{d.cronExp}</td>
+
                 <td>{d.method}</td>
+
                 <td
                   className={`${d.status === "active" ? styles.success : styles.failed}`}
                 >

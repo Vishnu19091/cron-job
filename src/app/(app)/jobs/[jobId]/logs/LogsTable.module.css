@@ -37,8 +37,8 @@
 
 /* Header */
 .thead {
-  background: #2c2c2c;
-  color: #ddd;
+  background: var(--table_head_bg);
+  color: var(--table_head_text);
 }
 
 .th {
@@ -49,8 +49,8 @@
 
 /* Body */
 .tbody {
-  background: #111111;
-  color: #ccc;
+  background: var(--row_alt);
+  color: var(--table_head_text);
 }
 
 .row {
@@ -60,7 +60,7 @@
 }
 
 .row:hover {
-  background: #333;
+  background: var(--row_hover);
 }
 
 .td {
@@ -69,12 +69,12 @@
 
 /* Success / Failed colors */
 .success {
-  color: #4ade80; /* green */
+  color: var(--success); /* green */
   font-weight: 600;
 }
 
 .failed {
-  color: #f87171; /* red */
+  color: var(--failed); /* red */
   font-weight: 600;
 }
 
@@ -86,7 +86,7 @@
 
 /* Expandable Row */
 .expandedRow {
-  background: #2c2c2c;
+  background: var(--expandable_row);
   border-bottom: 1px solid #444;
 }
 
@@ -100,19 +100,19 @@
 }
 
 .pre {
-  background: #111;
+  background: var(--pre);
   padding: 12px;
   margin-top: 6px;
   border-radius: 6px;
   white-space: pre-wrap;
-  color: #aaa;
+  color: var(--text);
   overflow-x: auto;
 }
 
 /* No Logs */
 .noLogsBody {
-  background: #111;
-  color: #ccc;
+  background: var(--background);
+  color: var(--text);
 }
 
 .noLogsCell {
@@ -131,7 +131,7 @@
 
 .pagination_nav_link {
   padding: 10px;
-  background: #333;
+  background: var(--pagination_nav_link);
   border-radius: 10px;
 }
 

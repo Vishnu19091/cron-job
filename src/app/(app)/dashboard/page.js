@@ -1,5 +1,6 @@
 import CreateJobBTN from "@/app/_components/CreateJobBTN";
 import UserInfo from "@/app/_components/UserInfo";
+import WrapperRecentExecution from "./_components/WrapperRecentExecution";
 import RecentExecutionLogs from "./_components/RecentExecutionLogs";
 
 export const metadata = {
@@ -12,6 +13,7 @@ export default function Page() {
       <CreateJobBTN />
       <UserInfo />
       <RecentExecutionLogs />
+      {/* <WrapperRecentExecution /> */}
     </div>
   );
 }

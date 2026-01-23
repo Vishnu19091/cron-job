@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { createCronJob } from "@/app/_lib/server/server-data-service";
 import ParseJSON from "@/app/_lib/server/parseJSON";
 import styles from "./page.module.css";
+import "../[jobId]/edit/page.css";
 import { useCreateJob } from "@/app/_contexts/JobCreateContext";
 import CrontabExpression from "../_components/CrontabExpression";
 import CronScheduleType from "../_components/CronScheduleType";

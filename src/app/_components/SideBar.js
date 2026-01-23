@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import SignOutButton from "./SignOutButton";
 import { useAuth } from "@/app/_contexts/AuthContext";
 import { useEffect, useState } from "react";
+import ModeToggle from "./ThemeSwitch";
 
 const Menu = [
   {
@@ -37,10 +38,10 @@ export default function SideBar() {
 
   const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
+  (useEffect(() => {
     setHydrated(true);
   }),
-    [];
+    []);
 
   return (
     <>
@@ -65,7 +66,7 @@ export default function SideBar() {
           }`}
         >
           {/* LOGO */}
-          <div className="flex w-full justify-between items-center gap-3 px-4 py-6">
+          <div className="flex w-full justify-between items-center gap-3 p-6">
             {isSideBarOpen && hydrated && (
               <h1 className="text-xl font-semibold">Cron-Job</h1>
             )}
@@ -140,6 +141,7 @@ export default function SideBar() {
               </a>
             </div>
           )}
+          <ModeToggle />
         </div>
       </div>
     </>

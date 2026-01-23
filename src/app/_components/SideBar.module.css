@@ -27,7 +27,7 @@
   height: 100dvh;
   max-height: 100dvh;
 
-  background: #030303;
+  background: var(--background);
   padding-top: 1rem;
   padding-bottom: 1rem;
   /* margin: 5px; */
@@ -36,10 +36,12 @@
   flex-direction: column;
   justify-content: space-between;
 
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid var(--border_SideBar);
 
   /* Smooth open/close animation */
-  transition: width 0.3s ease, padding 0.3s ease;
+  transition:
+    width 0.3s ease,
+    padding 0.3s ease;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -47,10 +49,11 @@
 .side_bar_collapsed {
   width: 4.5rem;
   justify-content: center;
+  align-items: center;
 }
 
 .side_bar_expanded {
-  width: 14rem;
+  width: 15.5rem;
 }
 
 /* ============================
@@ -71,7 +74,7 @@
   padding: 0.75rem;
   border-radius: 0.75rem;
 
-  color: white;
+  color: var(--text);
   cursor: pointer;
 
   transition: background 0.2s ease;
@@ -82,12 +85,12 @@
 }
 
 .menu_item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--SideBar_menu_item_hover);
 }
 
 /* Active tab */
 .menu_item_active {
-  background: rgba(111, 0, 170, 0.35) !important;
+  background: var(--SideBar_menu_item) !important;
 }
 /* ============================
    Footer
@@ -111,11 +114,13 @@
    Toggle Button (Desktop)
 ============================ */
 .toggle_button {
-  background: black;
-  color: white;
+  background: var(--background);
+  color: var(--foreground);
 
   cursor: pointer;
-  transition: left 0.3s ease, transform 0.2s ease;
+  transition:
+    left 0.3s ease,
+    transform 0.2s ease;
   scale: 1.4;
 
   position: relative;
@@ -135,8 +140,8 @@
     top: 0.5rem;
     left: 1rem;
     z-index: 1001;
-    background: #000;
-    color: #fff;
+    background: var(--foreground);
+    color: var(--background);
     padding: 0.5rem;
     border-radius: 0.5rem;
   }

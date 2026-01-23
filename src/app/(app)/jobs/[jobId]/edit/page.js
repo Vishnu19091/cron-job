@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import TestRunbutton from "../../_components/TestRunbutton";
 import { useCreateJob } from "@/app/_contexts/JobCreateContext";
 import styles from "./page.module.css";
+import "./page.css";
 import { toast } from "react-toastify";
 import CrontabExpression from "../../_components/CrontabExpression";
 import { onCronInputChange } from "../../_components/cronController";
@@ -89,7 +90,7 @@ function Page() {
         shouldSendBody ? ParseJSON(jobBody) : null,
         jobStatus,
         cronExpression,
-        timeZone
+        timeZone,
       );
       // console.log(res);
       toast.update(toastJob, {
@@ -129,10 +130,10 @@ function Page() {
                     jobStatus === "active"
                       ? "border-green-400 bg-green-800 text-green-100"
                       : jobStatus === "paused"
-                      ? "border-yellow-400 bg-yellow-800 text-yellow-100"
-                      : jobStatus === "failed"
-                      ? "border-red-400 bg-red-800 text-red-100"
-                      : "border-gray-400 bg-gray-800 text-gray-100"
+                        ? "border-yellow-400 bg-yellow-800 text-yellow-100"
+                        : jobStatus === "failed"
+                          ? "border-red-400 bg-red-800 text-red-100"
+                          : "border-gray-400 bg-gray-800 text-gray-100"
                   }`}
                 >
                   {jobStatus}

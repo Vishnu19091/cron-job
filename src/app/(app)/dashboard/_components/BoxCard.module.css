@@ -1,0 +1,25 @@
+.container {
+  border: 1px solid var(--border);
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+  border-radius: 0.25rem;
+  width: 15%;
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.container h3 {
+  font-size: 1.8rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+}

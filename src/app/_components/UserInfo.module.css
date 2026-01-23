@@ -1,0 +1,11 @@
+.jobsStatusCard {
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .jobsStatusCard {
+    flex-direction: column;
+  }
+}

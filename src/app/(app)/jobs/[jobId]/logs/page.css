@@ -1,0 +1,13 @@
+:root {
+  --span_nth_child: #ababab;
+  --expandable_row: #8e8e8e;
+  --pre: #e0e0e0;
+  --pagination_nav_link: #b0b0b0;
+}
+
+html.dark {
+  --span_nth_child: #1a1a1a;
+  --expandable_row: #2c2c2c;
+  --pre: #111;
+  --pagination_nav_link: #333;
+}

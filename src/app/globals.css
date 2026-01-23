@@ -1,8 +1,58 @@
 @import "tailwindcss";
 
+/* ------------------------------
+   Base (Light Theme)
+-------------------------------- */
 :root {
-  --background: #ffffff;
+  --background: #dcdcdc;
   --foreground: #171717;
+  --text: var(--color-black);
+
+  --border: #000;
+
+  /* SIDEBAR */
+  --border_SideBar: #727272;
+  --SideBar_menu_item: #6f00aa59;
+  --SideBar_menu_item_hover: #0000001c;
+
+  /* RECENT_EXECUTION_LOGS_TABLE */
+  --rc_tb_th: #0f1012;
+
+  --link: #006eff;
+
+  --success: #22c55e;
+
+  --failed: #ef4444;
+
+  --spinner_border: #dfefff;
+}
+
+/* ------------------------------
+   Dark Theme (controlled by next-themes)
+-------------------------------- */
+html.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --text: var(--color-white);
+  --spinner_border: #1b2631;
+
+  --border: #fff;
+
+  /* SIDEBAR */
+  --border_SideBar: #ffffff1a;
+  --SideBar_menu_item: #6f00aa59;
+  --SideBar_menu_item_hover: #ffffff14;
+
+  /* RECENT_EXECUTION_LOGS_TABLE */
+  --rc_tb_th: #9ca3af;
+}
+
+/* ------------------------------
+   Tailwind Theme Tokens
+-------------------------------- */
+@theme {
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
 }
 
 @theme inline {
@@ -12,13 +62,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ------------------------------
+   Global Styles
+-------------------------------- */
 body {
   background: var(--background);
   color: var(--foreground);

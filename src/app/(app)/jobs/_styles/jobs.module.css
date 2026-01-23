@@ -18,20 +18,8 @@
 .header h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #ffb38a;
+  color: var(--header_h1);
 }
-
-/* -------------------------
-    Light Theme
-------------------------- 
-.light {
-  --table-bg: #ffffff;
-  --table-text: #222;
-  --table-head-bg: #f4f4f4;
-  --row-alt: #fafafa;
-  --row-hover: #eee;
-}
-*/
 
 /* -------------------------
    Table Layout
@@ -46,15 +34,15 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--table-bg, #0f0f0f);
-  color: var(--table-text, #eaeaea);
+  background: var(--table_bg);
+  color: var(--table_text);
   overflow: hidden;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
 }
 
 .thead {
-  background: var(--table-head-bg, #1b1b1b);
-  color: var(--table-head-text, #f0f0f0);
+  background: var(--table_head_bg);
+  color: var(--table_head_text);
 }
 
 .table th,
@@ -65,11 +53,11 @@
 }
 
 .table tbody tr:nth-child(even) {
-  background: var(--row-alt, #151515);
+  background: var(--row_alt, #151515);
 }
 
 .table tbody tr:hover {
-  background: var(--row-hover, #202020);
+  background: var(--row_hover, #202020);
   transition: background 0.2s ease;
 }
 
@@ -83,12 +71,12 @@
 
 .jobName {
   font-weight: 600;
-  color: var(--job-name, #ffffff);
+  color: var(--job_name, #ffffff);
 }
 
 .jobUrl {
   font-size: 0.8rem;
-  color: var(--job-url, #aaaaaa);
+  color: var(--job_url, #aaaaaa);
 }
 
 /* ============================
@@ -103,21 +91,21 @@
 }
 
 .active {
-  background: rgba(0, 255, 100, 0.15);
-  color: #3afc7a;
-  border: 1px solid #2ed66c;
+  background: var(--active_bg);
+  color: var(--active_color);
+  border: var(--active_border);
 }
 
 .paused {
-  background: rgba(255, 220, 0, 0.15);
-  color: #ffea65;
-  border: 1px solid #d3c64a;
+  background: var(--paused_bg);
+  color: var(--paused_color);
+  border: var(--paused_border);
 }
 
 .failed {
-  background: rgba(255, 60, 60, 0.15);
-  color: #ff7676;
-  border: 1px solid #c14c4c;
+  background: var(--failed_bg);
+  color: var(--failed_color);
+  border: var(--failed_border);
 }
 
 .disabled {
@@ -148,7 +136,7 @@
 }
 
 .editLink {
-  color: #6cb8ff;
+  color: var(--edit_link);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -160,7 +148,7 @@
 
 .deleteBtn {
   background: transparent;
-  color: #ff7a7a;
+  color: var(--delete_link);
   border: none;
   cursor: pointer;
   font-size: 0.9rem;

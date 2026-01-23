@@ -1,0 +1,11 @@
+:root {
+  --webkit_lng: -webkit-linear-gradient(to right, #f0f0f0, #bf83fc45, #f0f0f0);
+  --lng: linear-gradient(to right, #f0f0f0, #bf83fc45, #f0f0f0);
+  --form_container: #d9c5e3;
+}
+
+html.dark {
+  --webkit_lng: -webkit-linear-gradient(to right, #000000, #100a16, #000000);
+  --lng: linear-gradient(to right, #000000, #100a16, #000000);
+  --form_container: #0c0811;
+}

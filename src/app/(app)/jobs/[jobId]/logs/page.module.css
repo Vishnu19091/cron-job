@@ -28,16 +28,16 @@
 .jobDetails p:nth-child(3) span,
 .jobDetails p:nth-child(4) span,
 .jobDetails p:nth-child(5) span {
-  background: #1a1a1a;
+  background: var(--span_nth_child);
   padding: 4px;
   border-radius: 5px;
 }
 
 .jobDetails .editLink {
   font-size: large;
-  border: #0000ff 1px solid;
-  background-color: #0000ff;
-  color: #fff;
+  border: #06559e 1px solid;
+  background-color: #06559e;
+  color: var(--text);
   padding: 5px;
   border-radius: 10px;
 

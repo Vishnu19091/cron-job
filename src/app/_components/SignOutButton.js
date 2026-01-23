@@ -6,7 +6,7 @@ function SignOutButton() {
     <form action={signOut} className="w-fit mx-auto">
       <button
         // title={`Logout session from ${userProvider}`}
-        className="py-3 px-3 hover:bg-white hover:text-black border border-white transition-colors duration-300 flex flex-row items-center gap-4 font-semibold cursor-pointer"
+        className="py-3 px-3 hover:bg-foreground hover:text-background border border-foreground transition-colors duration-300 flex flex-row items-center gap-4 font-semibold cursor-pointer"
       >
         <LogOut />
         <span>LogOut</span>

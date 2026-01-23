@@ -3,7 +3,7 @@
   width: 60px;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: 8px solid #1b2631;
+  border: 8px solid var(--spinner_border);
   border-right-color: #a059cb;
   animation: spin 0.75s infinite linear;
 }

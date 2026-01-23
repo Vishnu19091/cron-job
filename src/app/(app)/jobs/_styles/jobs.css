@@ -1,0 +1,56 @@
+:root {
+  --header_h1: #ffb38a;
+
+  --box_shadow: #0005;
+
+  --table_bg: #d8d8d829;
+  --table_text: #161616;
+  --table_head_bg: #e8e8e8;
+  --table_head_text: #393939;
+
+  --row_alt: #cdcdcd;
+  --row_hover: #bcbcbc;
+
+  --job_name: #151515;
+  --job_url: #666;
+
+  --active_bg: #00ff6430;
+  --active_color: #006a23;
+  --active_border: 1px solid #2ed66c;
+
+  --paused_bg: #ffdc0026;
+  --paused_color: #ffea65;
+  --paused_border: 1px solid #d3c64a;
+
+  --failed_bg: #ff3c3c26;
+  --failed_color: #784646;
+  --failed_border: 1px solid #c14c4c;
+
+  --edit_link: #06559e;
+  --delete_link: #a41e1e;
+}
+
+html.dark {
+  --table_bg: #0f0f0f;
+  --table_text: #eaeaea;
+  --table_head_bg: #1b1b1b;
+  --table_head_text: #f0f0f0;
+
+  --row_alt: #151515;
+  --row_hover: #202020;
+
+  --job_name: #ffffff;
+  --job_url: #aaaaaa;
+
+  --active_bg: #00ff6426;
+  --active_color: #3afc7a;
+
+  --paused_bg: #ffdc0026;
+  --paused_color: #ffea65;
+
+  --failed_bg: #ff3c3c26;
+  --failed_color: #ff7676;
+
+  --edit_link: #6cb8ff;
+  --delete_link: #ff7a7a;
+}

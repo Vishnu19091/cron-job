@@ -3,8 +3,8 @@
   width: 100%;
 
   background: #0a1116;
-  background: -webkit-linear-gradient(to right, #000000, #100a16, #000000);
-  background: linear-gradient(to right, #000000, #100a16, #000000);
+  background: var(--webkit_lng);
+  background: var(--lng);
 
   display: flex;
   justify-content: center;
@@ -40,7 +40,7 @@
   max-width: 60rem;
   width: 420px;
 
-  background: #0c0811;
+  background: var(--form_container);
   border-radius: 14px;
   padding: 2rem;
   display: flex;
@@ -58,7 +58,7 @@
 
 .form label {
   font-size: 0.9rem;
-  color: #e0e0e0;
+  color: var(--text);
   margin-bottom: 4px;
 }
 
@@ -68,8 +68,8 @@
 .form textarea {
   outline: none;
   border: 1px solid #4b4b4b;
-  background: #0f0f12;
-  color: white;
+  background: var(--background);
+  color: var(--text);
   padding: 0.7rem;
   border-radius: 8px;
   transition: all 200ms ease;
@@ -80,6 +80,7 @@
 .form textarea:focus {
   border-color: #a855f7;
   box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+  outline: none;
 }
 
 /* Buttons */

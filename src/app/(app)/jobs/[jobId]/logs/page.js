@@ -1,6 +1,7 @@
 import { getJob, UserJobLogs } from "@/app/_lib/server/server-data-service";
 import LogsTable from "./LogsTable";
 import styles from "./page.module.css";
+import "./page.css";
 import JobName from "./jobname";
 import Link from "next/link";
 

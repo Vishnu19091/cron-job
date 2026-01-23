@@ -2,6 +2,7 @@
 import { CircleCheck, Clock } from "lucide-react";
 import BoxCard from "../(app)/dashboard/_components/BoxCard";
 import { useAuth } from "../_contexts/AuthContext";
+import styles from "./UserInfo.module.css";
 
 export default function UserInfo() {
   const {
@@ -25,7 +26,7 @@ export default function UserInfo() {
         </p>
       </section>
 
-      <div className="flex flex-row gap-5">
+      <div className={styles.jobsStatusCard}>
         <BoxCard icon={<Clock />} title="Total Jobs" data={totalJobs} />
         <BoxCard
           icon={<CircleCheck />}
