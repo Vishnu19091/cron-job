@@ -16,7 +16,7 @@
 }
 
 .table tr:hover {
-  background-color: var(--border_SideBar);
+  background-color: var(--rc_tb_tr);
   border-radius: 4px;
 }
 

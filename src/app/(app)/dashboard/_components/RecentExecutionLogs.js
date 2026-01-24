@@ -1,12 +1,9 @@
 import styles from "./RecentExecutionLogs.module.css";
 import { createSessionClient } from "@/app/_lib/server/appwrite.server";
 import { Query } from "node-appwrite";
+import RecentExecutionTable from "./WrapperRecentExecution";
 
-function FormatDateTime(ts) {
-  return new Date(ts).toLocaleString();
-}
-
-async function RecentExecutionLogs({ userTimeZone }) {
+async function RecentExecutionLogs() {
   const dbID = String(process.env.NEXT_PUBLIC_DATABASE_ID);
 
   const jobsCollections = "jobs-collections";
@@ -17,19 +14,6 @@ async function RecentExecutionLogs({ userTimeZone }) {
   const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
   let recentLogsData;
-
-  // console.log(
-  //   "Now->",
-  //   now.toISOString(),
-  //   "\nOne Hour Ago ->",
-  //   oneHourAgo.toISOString(),
-  // );
-
-  console.log({
-    now: new Date().toISOString(),
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    userTimeZone,
-  });
 
   try {
     const ownerId = (await account.get()).$id;
@@ -46,12 +30,9 @@ async function RecentExecutionLogs({ userTimeZone }) {
   } catch (error) {
     throw new Error(error);
   }
-  // const userJobs = await getUserJobs();
 
-  // const lastHour = filterLastHour(userJobs.rows, "timeStamp");
-  // console.log(recentLogsData);
   return (
-    <div className="border border-(--border) rounded-2xl p-3 w-[inherit]">
+    <div className="border border-(--border) rounded-2xl p-3 w-[85%]">
       <h3 className="text-2xl">
         Recent Execution <span>Last 1 hour</span>
       </h3>
@@ -70,38 +51,10 @@ async function RecentExecutionLogs({ userTimeZone }) {
         </thead>
         <tbody>
           {recentLogsData.length ? (
-            recentLogsData.map((d, idx) => (
-              <tr key={d.$id}>
-                <td>{idx + 1}</td>
-                <td className="font-bold" title={`Job Name - ${d.name}`}>
-                  {d.url}
-                </td>
-
-                <td>{d.cronExp}</td>
-
-                <td>{d.method}</td>
-
-                <td
-                  className={`${d.status === "active" ? styles.success : styles.failed}`}
-                >
-                  {d.status}
-                </td>
-
-                <td>{FormatDateTime(d.lastRun)}</td>
-
-                <td>
-                  <a
-                    href={`/jobs/${d.$id}/logs?name=${d.name}`}
-                    className={styles.link}
-                  >
-                    View logs →
-                  </a>
-                </td>
-              </tr>
-            ))
+            <RecentExecutionTable logData={recentLogsData} />
           ) : (
             <tr>
-              <td colSpan={5} className="text-center text-2xl">
+              <td colSpan={7} className="text-center text-2xl">
                 No Recent Executions
               </td>
             </tr>

@@ -4,7 +4,7 @@
    Base (Light Theme)
 -------------------------------- */
 :root {
-  --background: #dcdcdc;
+  --background: #ffffff;
   --foreground: #171717;
   --text: var(--color-black);
 
@@ -17,6 +17,7 @@
 
   /* RECENT_EXECUTION_LOGS_TABLE */
   --rc_tb_th: #0f1012;
+  --rc_tb_tr: #cdcdcd;
 
   --link: #006eff;
 
@@ -32,7 +33,7 @@
 -------------------------------- */
 html.dark {
   --background: #0a0a0a;
-  --foreground: #ededed;
+  --foreground: #f1f1f1;
   --text: var(--color-white);
   --spinner_border: #1b2631;
 
@@ -45,6 +46,7 @@ html.dark {
 
   /* RECENT_EXECUTION_LOGS_TABLE */
   --rc_tb_th: #9ca3af;
+  --rc_tb_tr: #313131;
 }
 
 /* ------------------------------
