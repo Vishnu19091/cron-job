@@ -32,6 +32,14 @@ export async function runScheduler() {
         responseBody: data,
       });
 
+      // To update the job's status MetaData based on statuscode received
+      let setStatus = "disabled";
+      if (result.statusCode >= 200 && result.statusCode <= 299) {
+        setStatus = "active";
+      } else if (result.statusCode >= 400 && result.statusCode <= 599) {
+        setStatus = "failed";
+      }
+
       const nextRun = computeNextRun({
         cronExp: job.cronExp,
         timeZone: job.timeZone,
@@ -42,14 +50,14 @@ export async function runScheduler() {
         jobId: job.$id,
         lastRun: now,
         nextRun: nextRun,
-        status: "active",
+        status: setStatus,
       });
     } catch (error) {
       await InsertUserJobLog({
         jobId: job.$id,
-        statusCode: result.statusCode,
-        responseTime: result.durationMs,
-        responseBody: result.data,
+        statusCode: result?.statusCode ?? 0,
+        responseTime: result?.durationMs ?? 0,
+        responseBody: result?.data ?? null,
         error: error.message,
       });
 

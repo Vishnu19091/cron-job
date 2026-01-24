@@ -70,11 +70,18 @@ export async function InsertUserJobLog({
 
   const db = getDatabases();
 
+  let setSuccess;
+  if (statusCode >= 200 && statusCode <= 299) {
+    setSuccess = true;
+  } else if (statusCode >= 400 && statusCode <= 599) {
+    setSuccess = false;
+  }
+
   return await db.createDocument(databaseId, logsCollectionId, "unique()", {
     jobId, // relationship → document ID
     statusCode, // MUST be integer
     responseTime, // MUST be integer
-    success: !error, // REQUIRED boolean
+    success: setSuccess, // REQUIRED boolean
     responseBody: serializeResponseBody(responseBody) ?? null,
     error: error ?? null,
   });
