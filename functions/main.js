@@ -1,9 +1,4 @@
-import {
-  GetAllJobs,
-  getDueJobs,
-  InsertUserJobLog,
-  updateJobMetaData,
-} from "./lib/db.js";
+import { getDueJobs, InsertUserJobLog, updateJobMetaData } from "./lib/db.js";
 import { request } from "./lib/request.js";
 import { RemoveOldLogRecords, runScheduler } from "./lib/scheduler.js";
 
@@ -59,16 +54,8 @@ export default async function ({ req, res, log, error }) {
     return res.json({ jobs });
   }
 
-  // if (req.path === "/all" && req.method === "GET") {
-
-  // let arr = [];
-  // for (let job = 0; job < documents.length; job++) {
-  //   if (documents[job].$id) arr.push(documents[job].$id);
-  // }
-  // log(total);
-  // }
-
-  await runScheduler();
-  // const rolr = await RemoveOldLogRecords();
+  const schdlr = await runScheduler();
+  const rolr = await RemoveOldLogRecords();
+  log({ Scheduler: schdlr, RemoveOldlogs: rolr });
   return res.json({ ok: true });
 }

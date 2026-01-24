@@ -72,6 +72,7 @@ export async function runScheduler() {
       });
     }
   }
+  return { message: "Scheduler Executed Successfully!" };
 }
 
 /**
@@ -91,7 +92,7 @@ export async function RemoveOldLogRecords() {
     );
   }
 
-  const MAX_LIMIT = 250;
+  const MAX_LIMIT = 150;
 
   const { documents: jobs } = await GetAllJobs();
 
@@ -108,7 +109,7 @@ export async function RemoveOldLogRecords() {
     );
 
     if (count <= MAX_LIMIT) continue;
-    const excess = count - MAX_LIMIT;
+    let excess = count - MAX_LIMIT;
 
     while (excess > 0) {
       const limit = Math.min(excess, 100);
