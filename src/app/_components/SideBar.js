@@ -56,7 +56,7 @@ export default function SideBar() {
       </button>
 
       <div
-        className={`relative h-screen flex ${
+        className={`relative h-screen transition-all duration-400 ease-in-out flex ${
           !isSideBarOpen ? "lg:w-[72px] sm:w-0" : "lg:w-[15%] sm:w-0"
         }`}
       >

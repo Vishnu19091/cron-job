@@ -78,8 +78,8 @@ function TestRunbutton() {
 
             {testData.data && (
               <>
-                <h4 className="mt-3 text-xl text-white">Response Body</h4>
-                <pre className="bg-[#171717] text-white p-2 rounded-lg text-sm text-start">
+                <h4 className="mt-3 text-xl text-(--text)">Response Body</h4>
+                <pre className="bg-(--rc_tb_tr) text-(--text) p-2 rounded-lg overflow-x-scroll text-sm text-start">
                   {JSON.stringify(testData.data, null, 2)}
                 </pre>
               </>

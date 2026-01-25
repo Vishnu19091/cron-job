@@ -24,6 +24,8 @@ export async function POST(request) {
     const response = await fetch(url, options);
 
     const end = performance.now();
+    // const headers = response.headers;
+    // console.log(headers);
     const contentType = response.headers.get("Content-Type");
 
     let data;
@@ -43,6 +45,7 @@ export async function POST(request) {
       status: response.status,
       statusText: response.statusText,
       durationMs: Math.round(end - start),
+      contentType,
       data,
     });
   } catch (err) {
