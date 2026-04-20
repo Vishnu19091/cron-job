@@ -25,9 +25,9 @@ export async function middleware(request) {
   }
 
   // // Redirect to dashboard if already logged in and trying to access a public auth page
-  if (isPublicRoute && user?.$id && !path.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
-  }
+  // if (isPublicRoute && user?.$id && !path.startsWith("/dashboard")) {
+  //   return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
+  // }
 
   return NextResponse.next();
 }
